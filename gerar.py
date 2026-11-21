@@ -32,7 +32,7 @@ SO_LIMIAR = {'289', '308'}        # seleção feminina do Afeganistão: nunca di
 
 ACENTO = {'divisoria': 'divisória', 'repertorio': 'repertório', 'exploracao': 'exploração', 'titulo': 'título',
           'reticula': 'retícula', 'fusao': 'fusão', 'creditos': 'créditos', 'tres': 'três', 'aa2': 'AA2', 'aa3': 'AA3',
-          'kv': 'KV', 'are': 'Are', 'na': 'na', 'metro': 'metrô', 'poster': 'pôster', 'voz': 'voz', 'onibus': 'ônibus'}
+          'kv': 'KV', 'are': 'Are', 'na': 'na', 'metro': 'metrô', 'poster': 'pôster', 'voz': 'voz', 'onibus': 'ônibus', 'serie': 'série', 'sumula': 'súmula', 'ep1': 'ep. 1', 'ep2': 'ep. 2', 'ep3': 'ep. 3', 'ep4': 'ep. 4'}
 FOTO_NOME = {'533': 'trave à noite', '186': 'neblina', '153': 'clarão', '155': 'campo aceso', '119': 'chão de luz',
              '110': 'pelada na praça', '289': 'campo de terra', '308': 'comemoração', '391': 'horizonte', '499': 'futsal'}
 FMT_NOME = {'poster': 'Pôster 3:4', 'abrigo': 'Abrigo de ônibus 2:3', 'metro': 'Painel de metrô 2:1', 'story': 'Story 9:16',
@@ -153,7 +153,7 @@ def itens_aa():
         elif letra == 'k':
             cap = 'kv' if re.fullmatch(r'k[01]b?', cod) else 'aplicacoes'
         else:
-            cap = {'r': 'repertorio', 'e': 'exploracao', 's': 'sistema'}.get(letra, 'sistema')
+            cap = {'r': 'repertorio', 'e': 'exploracao', 's': 'sistema', 'n': 'aplicacoes'}.get(letra, 'sistema')
         divis = 'divisoria' in slug or not letra
         out.append(dict(id='aa-livro-' + n, kv='aa', cap=cap, tipo='tela', codigo='AA ' + n if divis else cod.upper(),
                         titulo=frase(slug), src=p))
@@ -173,7 +173,7 @@ def itens_aa():
         base = nome.split('-')[0]
         tit = FMT_NOME.get(base, frase(nome)) + (' ' + nome.split('-')[1] if base == 'carrossel' and '-' in nome else '')
         out.append(dict(id='aa-' + p.stem.split('-')[0] + '-' + nome, kv='aa', cap='kv' if base == 'poster' else 'aplicacoes',
-                        tipo='peca', codigo='KV' if base == 'poster' else base[:2].upper(), titulo=tit, src=p))
+                        tipo='peca', codigo='KV' if base == 'poster' else base[:2].upper() if base in FMT_NOME else nome.replace('-', ' ').upper()[:12], titulo=tit, src=p))
     return out
 
 

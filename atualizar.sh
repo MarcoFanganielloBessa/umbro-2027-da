@@ -12,7 +12,8 @@ git push -q origin main
 alvo=$(python3 -c "import json;print(json.load(open('manifest.json'))['gerado'])")
 echo "enviado; esperando o Pages servir a versão de $alvo"
 for i in $(seq 1 40); do
-  if curl -fsS "$URL/manifest.json?t=$RANDOM$i" 2>/dev/null | grep -q "$alvo"; then echo "no ar: $URL/"; exit 0; fi
+  no_ar=$(curl -fsS "$URL/manifest.json?t=$RANDOM$i" 2>/dev/null | head -c 200 || true)
+  case "$no_ar" in *"$alvo"*) echo "no ar: $URL/"; exit 0;; esac
   sleep 6
 done
 echo "publicado, mas o Pages ainda não serviu a versão nova: $URL/"; exit 1
