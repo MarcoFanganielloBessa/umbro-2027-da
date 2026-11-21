@@ -24,7 +24,7 @@
     porId[it.id] = it;
     it.H = it.tipo === 'tela' ? 331 : it.tipo === 'prancha' ? 760 : 460; it.W = Math.round(it.H * it.w / it.h);
     const b = document.createElement('button'); b.className = 'item'; b.style.width = it.W + 'px'; b.dataset.id = it.id; b.setAttribute('aria-label', it.codigo + ' ' + it.titulo);
-    const im = document.createElement('img'); im.src = it.t + '?v=' + it.v; im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.draggable = false; im.style.height = it.H + 'px';
+    const im = document.createElement('img'); im.src = it.t + '?v=' + it.v; im.alt = ''; im.decoding = 'async'; im.draggable = false; im.style.height = it.H + 'px';
     const l = document.createElement('span'); l.className = 'leg'; l.innerHTML = '<b></b>'; l.firstChild.textContent = it.codigo; l.append(it.titulo);
     b.append(im, l); chapa[it.kv].appendChild(b); it.el = b; it.img = im;
   }
@@ -96,12 +96,12 @@
     const passo = t => { const p = dur ? lim((t - t0) / dur, 0, 1) : 1, e = 1 - Math.pow(1 - p, 3); v.x = de.x + (alvo.x - de.x) * e; v.y = de.y + (alvo.y - de.y) * e; v.k = de.k + (alvo.k - de.k) * e; aplica(); if (p < 1) anim = requestAnimationFrame(passo); }; passo(t0);
   }
   function enquadra(r, modo, suave) { // modo 'tudo' = cabe inteiro; 'largura' = cabe na largura, alinhado ao alto
-    const pw = palco.clientWidth, ph = palco.clientHeight, mg = pw < 760 ? 12 : 36;
+    const pw = palco.clientWidth, ph = palco.clientHeight, mg = pw < 760 ? 12 : 36; if (!pw || !ph) return;
     const k = modo === 'tudo' ? Math.min((pw - 2 * mg) / r.w, (ph - 2 * mg) / r.h) : (pw - 2 * mg) / r.w;
     vai({ k, x: (pw - r.w * k) / 2 - r.x * k, y: modo === 'tudo' ? (ph - r.h * k) / 2 - (r.y || 0) * k : mg - (r.y || 0) * k }, suave);
   }
   const tudo = () => ({ x: 0, y: 0, w: Wm, h: Hm });
-  function inicio(suave) { const estreito = palco.clientWidth < 760; if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (estreito && pos.jc) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), 'largura', suave); }
+  function inicio(suave) { const estreito = palco.clientWidth < 760; if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (pos.jc && filtro.cap === 'todos' && !filtro.pecas) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), estreito ? 'largura' : 'tudo', suave); }
 
   const pts = new Map(); let mexeu = false, soma = 0, ant = null;
   const rel = e => { const r = palco.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
@@ -170,10 +170,14 @@
   });
   let rt = 0, tocou = false, larg = palco.clientWidth;
   palco.addEventListener('pointerdown', () => { tocou = true; }); palco.addEventListener('wheel', () => { tocou = true; }, { passive: true });
-  new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(() => { const era = larg; larg = palco.clientWidth; if (!larg) return; leiaute(); if (!era || !tocou) inicio(false); }, 80); }).observe(palco);
+  let alt = palco.clientHeight;
+  const ajusta = () => { const w = palco.clientWidth, h = palco.clientHeight; if (!w || !h || (w === larg && h === alt)) return; const era = larg; larg = w; alt = h; leiaute(); if (!era || !tocou) inicio(false); };
+  new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(ajusta, 60); }).observe(palco);
+  window.addEventListener('resize', ajusta); document.addEventListener('visibilitychange', ajusta); window.addEventListener('pageshow', ajusta);
+  { let n = 0; const t = setInterval(() => { ajusta(); if (++n > 60) clearInterval(t); }, 250); }
 
   // partida
-  leiaute(); inicio(false); setTimeout(() => mundo.classList.add('vivo'), 900);
+  larg = 0; alt = 0; leiaute(); inicio(false); ajusta(); setTimeout(() => mundo.classList.add('vivo'), 900);
   setTimeout(() => $('#dica').classList.add('some'), 7000);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { leiaute(); if (!tocou) inicio(false); });
   Placa.iniciar(M);
