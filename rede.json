@@ -1,0 +1,38 @@
+{
+ "nota": "Referência → o que ensinou → experimento ou tela → key visual. Textos de v4/jc/sistema.js (telas de repertório), v4/jc/decisoes.md, v4/aa/decisoes.md e v4/CONTRATO.md.",
+ "lados": {
+  "jc": {
+   "kv": "jc-peca-kv",
+   "cadeias": [
+    {"refs": [{"id": "ref-manual", "titulo": "Placa manual, campo de terra", "img": "jc/img/ref-manual-v.jpg", "credito": "Samson Ssemakadde · Wikimedia Commons · CC0", "link": "https://commons.wikimedia.org/wiki/File:Substitution_board.jpg"}],
+     "licao": "Plaqueta virada à mão. O número aceso é só uma cor diferente.", "exp": {"item": "jc-tela-05", "rotulo": "E01–E08 · a forma do numeral"}},
+    {"refs": [{"id": "ref-led", "titulo": "Placa de LED, estádio", "img": "jc/img/ref-led.jpg", "credito": "Keiteay · Wikimedia Commons · CC BY 4.0", "link": "https://commons.wikimedia.org/wiki/File:Substitutions.jpg"}],
+     "licao": "Os pontos apagados continuam lá. É isso que faz o aceso acender.", "exp": {"item": "jc-tela-09", "rotulo": "E03, E04 · plaqueta no impresso, ponto de luz em tela"}},
+    {"refs": [{"id": "ref-placar", "titulo": "Placar de clube amador", "img": "jc/img/ref-placar.jpg", "credito": "Werner100359 · Wikimedia Commons · CC BY-SA 4.0", "link": "https://commons.wikimedia.org/wiki/File:Union_Geretsberg_gegen_ASK%C3%96_Gosau_(O.%C3%96_Landescup_2024-07-20)_59.jpg"}],
+     "licao": "O 90 no meio do placar: o minuto em que a placa sobe.", "exp": {"item": "jc-tela-10", "rotulo": "O que a placa diz"}},
+    {"refs": [{"id": "ref-gesto", "titulo": "A quarta árbitra", "img": "jc/img/gesto2.jpg", "credito": "Samson Ssemakadde · Wikimedia Commons · CC0 · marcação de lugar para ensaio próprio", "link": "https://commons.wikimedia.org/wiki/File:Substitution_board_being_used_in_a_football_match.jpg"}],
+     "licao": "O gesto: dois braços erguidos, de costas para a câmera.", "exp": {"item": "jc-tela-02", "rotulo": "Ideia"}},
+    {"refs": [{"id": "ref-hsv", "titulo": "HSV · “600 Minutes Stoppage Time”", "texto": "O placar do estádio anunciou 600 minutos de acréscimo numa ação de utilidade pública.", "credito": "ADC Europe", "link": "https://adceurope.org/project/600-minutes-stoppage-time"}],
+     "licao": "O acréscimo absurdo já foi usado. Aqui o número é sempre um fato.", "exp": {"item": "jc-tela-21", "rotulo": "Série · +27, +38, +4, +30"}},
+    {"refs": [{"id": "ref-laliga", "titulo": "LaLiga · parceiro oficial do acréscimo", "texto": "A placa virou espaço de patrocínio; a NSS contou trinta anos de desenho dela.", "credito": "NSS Sports", "link": "https://nss-sports.com/en/long-form/47178"}],
+     "licao": "O objeto é reconhecido no mundo todo. Ninguém fez dele um key visual.", "exp": {"item": "jc-tela-08", "rotulo": "A placa"}},
+    {"refs": [{"id": "ref-away", "titulo": "Umbro · AW26 “Away Days”", "texto": "A campanha global olha para tudo o que acontece em volta do jogo, não para o destino.", "credito": "umbro.com", "link": "https://umbro.com/en/style/campaigns/aw26-away-days-collection"},
+              {"id": "ref-home", "titulo": "Umbro · SS26 “Home”", "texto": "Um clube de bairro fictício, do campo à sede. Gente trabalhando, não posando.", "credito": "umbro.com", "link": "https://umbro.com/en/style/campaigns/ss26-home-collection"}],
+     "licao": "O conceito do ano fala a mesma língua da matriz. Foto direta, sem pose: vale para o gesto e para o campo.", "exp": {"item": "jc-tela-14", "rotulo": "Imagem"}},
+    {"refs": [{"id": "ref-fifa", "titulo": "FIFA · Brasil 2027 “Go Epic”", "texto": "Emblema da Copa feminina a partir da bandeira e da geometria do campo.", "credito": "fifa.com · brand unveiled · 25.01.2026"}],
+     "licao": "Sem verde e amarelo, sem emblema, sem nome do torneio: “a Copa delas”.", "exp": {"item": "jc-tela-16", "rotulo": "Voz"}},
+    {"refs": [{"item": "jc-limiar-533"}, {"item": "jc-limiar-186"}, {"item": "jc-limiar-153"}], "trio": true,
+     "licao": "Limiar em duas tintas: de noite o aceso vira laranja; de dia, papel.", "exp": {"item": "jc-kvfoto-E85", "rotulo": "E54–E63 · limiar → E84, E85 · KV com foto"}}
+   ]
+  },
+  "aa": {
+   "kv": "aa-kv-poster",
+   "cadeias": [
+    {"refs": [{"item": "aa-livro-03"}], "licao": "Efeito só funciona como marcador de tempo: tratado é arquivo, limpo é agora.", "exp": {"item": "aa-livro-26", "rotulo": "S7 · três estados de imagem"}},
+    {"refs": [{"item": "aa-livro-04"}], "licao": "O arquivo guardou a camisa. Não guardou quem vestiu.", "exp": {"item": "aa-livro-14", "rotulo": "E12 · a fusão"}},
+    {"refs": [{"item": "aa-livro-12"}], "licao": "Retícula de ponto a 45°, 80 a 100 pontos na largura da camisa. Royal só em retícula.", "exp": {"item": "aa-livro-23", "rotulo": "S4 · cor"}},
+    {"refs": [{"item": "aa-livro-17"}], "licao": "O mesmo dispositivo em foto real: Anefo, Zeist, 1973, CC0.", "exp": {"item": "aa-contraprova-acervo-real", "rotulo": "Contraprova · acervo real"}}
+   ]
+  }
+ }
+}

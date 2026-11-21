@@ -186,6 +186,43 @@ body.grade #palco, body.grade .controles, body.grade .mini, body.grade .dica { d
 .vizinhas img { display: block; width: 100%; outline: 1px solid rgba(128,128,128,.35); outline-offset: -1px; }
 .vizinhas button:hover img { outline: 2px solid var(--ac); }
 
+/* rede de referências: a tela principal */
+#rede { display: none; position: absolute; left: 0; top: 0; background: linear-gradient(90deg, var(--tinta) 50%, var(--papel) 50%); }
+body.refs #rede { display: block; }
+body.refs .chapa, body.refs .atalhos { display: none; }
+#rede svg { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.lig { fill: none; stroke-width: 1.5; vector-effect: non-scaling-stroke; transition: opacity .25s; }
+.lig.jc { stroke: #666; } .lig.aa { stroke: #a39e91; }
+#rede.foco .lig { opacity: .22; } #rede.foco .lig.on { opacity: 1; stroke-width: 3.5; }
+.lig.jc.on { stroke: var(--placa); } .lig.aa.on { stroke: var(--royal); }
+.rd-tit { position: absolute; top: 90px; font: 900 150px/.86 var(--tit); text-transform: uppercase; letter-spacing: -.01em; margin: 0; white-space: nowrap; }
+.rd-tit.jc { right: 50%; padding-right: 30px; color: var(--branco); } .rd-tit.aa { left: 50%; padding-left: 30px; color: var(--tinta); }
+.rd-col { position: absolute; top: 262px; font: 500 16px/1 var(--dad); letter-spacing: .04em; text-transform: uppercase; padding-bottom: 12px; border-bottom: 2px solid; }
+.rd-col.jc { color: #A5A29A; border-color: #3A3A3A; } .rd-col.aa { color: #5E5C57; border-color: var(--tinta); }
+.no { position: absolute; display: block; text-align: left; transition: opacity .25s; }
+.no.jc { color: var(--branco); --ac: var(--placa); --suave: #A5A29A; --fio: #4a4a4a; } .no.aa { color: var(--tinta); --ac: var(--royal); --suave: #5E5C57; --fio: var(--tinta); }
+#rede.foco .no:not(.on) { opacity: .25; }
+.no img { display: block; width: 100%; height: auto; outline: 1px solid rgba(128,128,128,.4); outline-offset: -1px; background: #2a2a2a; -webkit-user-drag: none; }
+.no.aa img { background: #dcd8cc; }
+button.no:hover img, button.no:focus-visible img, .no.on img { outline: 5px solid var(--ac); outline-offset: 0; }
+.no b { display: block; font: 500 20px/1.2 var(--txt); margin-top: 10px; }
+.no small { display: block; font-size: 12px; line-height: 1.35; letter-spacing: .03em; text-transform: uppercase; color: var(--suave); margin-top: 5px; }
+.no.txt { border: 1.5px solid var(--fio); padding: 16px 18px 16px; } .no.txt b { margin-top: 0; }
+.no.txt:hover, .no.txt.on { border-color: var(--ac); box-shadow: inset 0 0 0 3px var(--ac); }
+.no.txt span { display: block; font-size: 15px; line-height: 1.35; color: var(--suave); margin-top: 6px; }
+.no.lic { transform: translateY(-50%); border-left: 5px solid var(--ac); padding: 4px 0 6px 20px; font: 500 24px/1.22 var(--txt); letter-spacing: -.01em; cursor: pointer; }
+.no.exp .leg b, .no.exp b { font: 500 14px/1.3 var(--dad); letter-spacing: .03em; text-transform: uppercase; color: var(--ac); }
+.no.kv b { font: 900 54px/.9 var(--tit); text-transform: uppercase; margin-top: 18px; }
+.no.kv small { font-size: 14px; }
+.fi-ref p { font-size: 15px; line-height: 1.4; margin: 0 0 14px; color: #CFCBC0; }
+.fi-ref .lic { font: 500 19px/1.25 var(--txt); color: var(--branco); border-left: 4px solid var(--ac); padding-left: 12px; }
+.fi-ref .fonte { display: inline-block; margin: 4px 0 6px; padding: 10px 12px; border: 1px solid #555; color: inherit; text-decoration: none; font: 400 11px/1 var(--dad); letter-spacing: .04em; text-transform: uppercase; }
+.fi-ref .fonte:hover { background: var(--branco); color: var(--tinta); }
+.levou { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
+.levou button { text-align: left; } .levou img { display: block; width: 100%; outline: 1px solid rgba(128,128,128,.35); outline-offset: -1px; }
+.levou span { display: block; margin-top: 6px; font: 400 10px/1.3 var(--dad); letter-spacing: .03em; text-transform: uppercase; color: #A5A29A; }
+.levou button:hover img { outline: 2px solid var(--ac); }
+
 /* tela cheia */
 .cheia { position: fixed; inset: 0; z-index: 40; background: var(--tinta); color: var(--branco); display: grid; grid-template: auto 1fr auto / auto 1fr auto; }
 .cheia[hidden], .folha[hidden] { display: none; }

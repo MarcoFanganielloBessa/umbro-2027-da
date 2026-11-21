@@ -246,9 +246,30 @@ def main():
         feitos = sum(ex.map(lambda a: converter(*a), tarefas))
     apagados = 0
     for p in IMG.rglob('*.webp'):
+        if p.parent.name == 'r':
+            continue
         if str(p.relative_to(AQUI)) not in vivos:
             p.unlink(); apagados += 1
-    man = dict(gerado=time.strftime('%d/%m/%Y %H:%M'), caps=CAPS, itens=itens, fundos=fundos, creditos=creditos(),
+    # rede de referências (rede.json): converte as imagens próprias e confere os itens citados
+    rede = None
+    if (AQUI / 'rede.json').exists():
+        rede = json.load(open(AQUI / 'rede.json'))
+        ids = {i['id'] for i in itens}
+        for lado in rede['lados'].values():
+            assert lado['kv'] in ids, 'rede: KV fora do manifest: ' + lado['kv']
+            lado['cadeias'] = [c for c in lado['cadeias'] if c['exp']['item'] in ids and all(r.get('item', None) in ids or 'id' in r for r in c['refs'])]
+            for c in lado['cadeias']:
+                for r in c['refs']:
+                    if r.get('img'):
+                        src = V4 / r['img']
+                        assert src.stem.split('-')[0] not in SO_LIMIAR
+                        dst = 'img/r/%s.webp' % r['id']
+                        converter(src, AQUI / dst, 900 if 'CC' in r.get('credito', '') else 360, 76)
+                        w, h = tamanho_jpg(src)
+                        r.update(src=dst, w=w, h=h); del r['img']; vivos.add(dst)
+        for p in (IMG / 'r').glob('*.webp') if (IMG / 'r').exists() else []:
+            if str(p.relative_to(AQUI)) not in vivos: p.unlink()
+    man = dict(gerado=time.strftime('%d/%m/%Y %H:%M'), caps=CAPS, itens=itens, fundos=fundos, creditos=creditos(), rede=rede,
                fora=[dict(arquivo=k, motivo=v) for k, v in FORA.items()])
     json.dump(man, open(AQUI / 'manifest.json', 'w'), ensure_ascii=False, indent=1)
     total = sum(p.stat().st_size for p in IMG.rglob('*.webp')) / 1e6

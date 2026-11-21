@@ -8,7 +8,7 @@
   const palco = $('#palco'), mundo = $('#mundo');
   const chapa = { jc: $('#chapa-jc'), comum: $('#chapa-comum'), aa: $('#chapa-aa') };
   chapa.jc.style.width = chapa.aa.style.width = (G.cw + 2 * G.pad) + 'px'; chapa.comum.style.width = G.comum + 'px';
-  const filtro = { kv: 'todos', cap: 'todos', pecas: false, q: '' }; let vista = 'grade', sigGrade = null;
+  const filtro = { kv: 'todos', cap: 'todos', pecas: false, q: '' }; let vista = 'refs', sigGrade = null;
   const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const TIPO = { tela: 'Tela do livro', peca: 'Peça em tamanho real', prancha: 'Prancha de exploração', foto: 'Foto em limiar de duas tintas' };
@@ -70,11 +70,57 @@
     Wm = Math.max(x, 1); Hm = Math.max(alt, 1); mundo.style.width = Wm + 'px'; mundo.style.height = Hm + 'px';
     $('#conta').textContent = visiveis.length + ' de ' + M.itens.length + ' itens';
     const sig = JSON.stringify(filtro); if (sig !== sigGrade) { sigGrade = sig; grade(); }
+    if (vista === 'refs') { Wm = R.W; Hm = R.H; mundo.style.width = Wm + 'px'; mundo.style.height = Hm + 'px'; const mm2 = $('#mini-mundo'); mm2.style.height = Math.min(150, mm2.clientWidth * Hm / Wm) + 'px'; mm2.innerHTML = '<i class="jc" style="left:0;width:50%;height:100%"></i><i class="aa" style="left:50%;width:50%;height:100%"></i>'; return aplica(); }
     // minimapa
     const mm = $('#mini-mundo'); mm.style.height = Math.min(150, mm.clientWidth * Hm / Wm) + 'px';
     mm.innerHTML = ordem.filter(k => pos[k]).map(k => '<i class="' + k + '" style="left:' + (pos[k].x / Wm * 100) + '%;width:' + (pos[k].w / Wm * 100) + '%;height:100%"></i>').join('') +
       linhas.map(l => '<u class="' + l.kv + '" style="left:' + (l.x / Wm * 100) + '%;width:' + (l.w / Wm * 100) + '%;top:' + (l.y / Hm * 100) + '%"></u>').join('');
     aplica();
+  }
+
+  // ── rede de referências: referência → o que ensinou → experimento ou tela → key visual
+  const R = { W: 4620, H: 1, cad: {}, kvs: null };
+  function montaRede() {
+    const rd = M.rede, el = $('#rede'); if (!rd) return;
+    const X = { jc: { ref: 120, lic: 550, exp: 1040, kv: 1570 }, aa: { kv: 2350, exp: 3180, lic: 3690, ref: 4180 } }, WD = { ref: 320, lic: 380, exp: 400, kv: 700 }, y0 = 340, KH = 933;
+    const lados = {}; let maxH = KH + 120;
+    for (const kv of ['jc', 'aa']) { let y = 0; const cs = rd.lados[kv].cadeias.map((c, n) => {
+      const rs = c.refs.map((r, i) => { const it = r.item && porId[r.item], w = c.trio ? 96 : WD.ref; let h, ih = 0; if (it || r.src) { const iw = it ? it.w : r.w, hh = it ? it.h : r.h; ih = Math.min(c.trio ? 96 : 170, w * hh / iw); h = ih + (c.trio ? 0 : 66); } else h = 128; return { r, it, i, w: it || r.src ? (c.trio ? 96 : Math.min(w, ih * (it ? it.w / it.h : r.w / r.h))) : w, h, ih }; });
+      const hR = c.trio ? Math.max(...rs.map(r => r.h)) : rs.reduce((s, r) => s + r.h, 0) + 28 * (rs.length - 1);
+      const ex = porId[c.exp.item], eh = Math.min(220, WD.exp * ex.h / ex.w), ew = eh * ex.w / ex.h, bh = Math.max(hR, eh + 50, 140), o = { c, n, key: kv + n, rs, hR, ex, eh, ew, y, bh }; y += bh + 40; return o; });
+      lados[kv] = { cs, H: y - 40 }; maxH = Math.max(maxH, y - 40); }
+    R.H = y0 + maxH + 140; el.style.width = R.W + 'px'; el.style.height = R.H + 'px';
+    let h = '<h2 class="rd-tit jc">De onde vêm</h2><h2 class="rd-tit aa">os dois KVs.</h2>', lg = '';
+    const col = (kv, x, w, t) => '<div class="rd-col ' + kv + '" style="left:' + x + 'px;width:' + w + 'px">' + t + '</div>';
+    const curva = (x1, y1, x2, y2, cl) => { const d = (x2 - x1) / 2; return '<path class="lig ' + cl + '" d="M' + x1 + ' ' + y1 + 'C' + (x1 + d) + ' ' + y1 + ' ' + (x2 - d) + ' ' + y2 + ' ' + x2 + ' ' + y2 + '"/>'; };
+    R.kvs = {};
+    for (const kv of ['jc', 'aa']) { const L = lados[kv], x = X[kv], off = y0 + (maxH - L.H) / 2, kvTop = y0 + (maxH - KH) / 2, esq = kv === 'jc', K = porId[rd.lados[kv].kv];
+      h += col(kv, x.ref, WD.ref, 'Referência') + col(kv, x.lic, WD.lic, 'O que ensinou') + col(kv, x.exp, WD.exp, 'Experimento ou tela') + col(kv, x.kv, WD.kv, 'Key visual');
+      h += '<button class="no kv ' + kv + '" data-id="' + K.id + '" style="left:' + x.kv + 'px;top:' + kvTop + 'px;width:' + WD.kv + 'px"><img src="' + K.g + '?v=' + K.v + '" alt="" draggable="false"><b>' + KVN[kv] + '</b><small>' + esc(K.codigo + ' · ' + K.titulo) + '</small></button>';
+      R.kvs[kv] = { x: x.kv, y: kvTop, w: WD.kv, h: KH };
+      L.cs.forEach((o, n) => { const cy = off + o.y + o.bh / 2, cl = kv + ' c-' + o.key, c = o.c; R.cad[o.key] = { kv, c };
+        let ry = cy - o.hR / 2, borda = esq ? x.ref + WD.ref : x.ref;
+        if (c.trio) { o.rs.forEach((q, i) => { h += '<button class="no ref ' + cl + '" data-c="' + o.key + '" data-id="' + q.it.id + '" title="' + esc(q.it.titulo) + '" style="left:' + (x.ref + i * 112) + 'px;top:' + ry + 'px;width:96px"><img src="' + q.it.t + '?v=' + q.it.v + '" alt="" draggable="false" style="height:96px;object-fit:cover"></button>'; });
+          h += '<div class="no ' + cl + '" style="left:' + x.ref + 'px;top:' + (ry + 100) + 'px;width:' + WD.ref + 'px"><b>Fotos de noite</b><small>trave, neblina, clarão · Flickr · CC BY e BY-SA · crédito em cada foto</small></div>'; lg += curva(borda, cy, esq ? x.lic : x.lic + WD.lic, cy, cl); }
+        else for (const q of o.rs) { const r = q.r, it = q.it, attr = 'data-c="' + o.key + '" ' + (it ? 'data-id="' + it.id + '"' : 'data-r="' + q.i + '"') + ' style="left:' + x.ref + 'px;top:' + ry + 'px;width:' + (it || r.src ? q.w : WD.ref) + 'px"';
+          if (it) h += '<button class="no ref ' + cl + '" ' + attr + '><img src="' + it.t + '?v=' + it.v + '" alt="" draggable="false"><b>' + esc(it.titulo) + '</b><small>' + esc(it.codigo + ' · ' + CAPN[it.cap]) + '</small></button>';
+          else if (r.src) h += '<button class="no ref ' + cl + '" ' + attr + '><img src="' + r.src + '" alt="" draggable="false" width="' + r.w + '" height="' + r.h + '"><b>' + esc(r.titulo) + '</b><small>' + esc(r.credito) + '</small></button>';
+          else h += '<button class="no ref txt ' + cl + '" ' + attr + '><b>' + esc(r.titulo) + '</b><span>' + esc(r.texto) + '</span><small>' + esc(r.credito) + '</small></button>';
+          lg += curva(esq ? x.ref + (it || r.src ? q.w : WD.ref) : x.ref, ry + (it || r.src ? q.ih / 2 : q.h / 2), esq ? x.lic : x.lic + WD.lic, cy, cl); ry += q.h + 28; }
+        h += '<div class="no lic ' + cl + '" data-c="' + o.key + '" style="left:' + x.lic + 'px;top:' + cy + 'px;width:' + WD.lic + 'px">' + esc(c.licao) + '</div>';
+        h += '<button class="no exp ' + cl + '" data-c="' + o.key + '" data-id="' + o.ex.id + '" style="left:' + x.exp + 'px;top:' + (cy - (o.eh + 40) / 2) + 'px;width:' + o.ew + 'px"><img src="' + o.ex.t + '?v=' + o.ex.v + '" alt="" draggable="false"><b>' + esc(c.exp.rotulo) + '</b></button>';
+        const ey = cy - 20, ky = kvTop + KH * (n + 1) / (L.cs.length + 1);
+        lg += esq ? curva(x.lic + WD.lic, cy, x.exp, ey, cl) + curva(x.exp + o.ew, ey, x.kv, ky, cl) : curva(x.lic, cy, x.exp + o.ew, ey, cl) + curva(x.exp, ey, x.kv + WD.kv, ky, cl); });
+    }
+    el.innerHTML = '<svg width="' + R.W + '" height="' + R.H + '" viewBox="0 0 ' + R.W + ' ' + R.H + '">' + lg + '</svg>' + h;
+  }
+  function foca(key) { const el = $('#rede'); for (const n of $$('#rede .on')) n.classList.remove('on'); if (!key) return el.classList.remove('foco'); el.classList.add('foco'); for (const n of $$('#rede .c-' + key)) n.classList.add('on'); const kv = $('#rede .no.kv.' + R.cad[key].kv); if (kv) kv.classList.add('on'); }
+  function fichaRef(key, ri) {
+    const { kv, c } = R.cad[key], r = c.refs[ri], ex = porId[c.exp.item], K = porId[M.rede.lados[kv].kv]; fichaAberta = false; fichaEl.hidden = false; fichaEl.className = 'ficha ' + kv;
+    fichaEl.innerHTML = '<header><span class="cod">Referência</span><span class="dado">' + KVN[kv] + '</span><button data-ficha-x aria-label="Fechar a ficha">✕</button></header><div class="fi-corpo fi-ref">' +
+      (r.src ? '<div class="fi-img"><img src="' + r.src + '" alt="' + esc(r.titulo) + '"></div>' : '') + '<h3>' + esc(r.titulo) + '</h3>' + (r.texto ? '<p>' + esc(r.texto) + '</p>' : '') +
+      '<dl><dt>Crédito</dt><dd>' + esc(r.credito) + '</dd></dl>' + (r.link ? '<a class="fonte" href="' + esc(r.link) + '" target="_blank" rel="noopener">Abrir a fonte ↗</a>' : '') +
+      '<h4>O que ensinou</h4><p class="lic">' + esc(c.licao) + '</p><h4>Levou a</h4><div class="levou"><button data-id="' + ex.id + '"><img src="' + ex.t + '?v=' + ex.v + '" alt=""><span>' + esc(c.exp.rotulo) + '</span></button><button data-id="' + K.id + '"><img src="' + K.t + '?v=' + K.v + '" alt=""><span>Key visual · ' + KVN[kv] + '</span></button></div></div>';
   }
 
   // ── grade: a entrada. Curadoria por KV e capítulo; a peça abre numa ficha ao lado
@@ -106,12 +152,12 @@
       (viz.length ? '<h4>No mesmo capítulo · ' + (viz.length + 1) + '</h4><div class="vizinhas">' + viz.slice(i0, i0 + 9).map(x => '<button data-id="' + x.id + '" title="' + esc(x.codigo + ' · ' + x.titulo) + '"><img src="' + x.t + '?v=' + x.v + '" alt="" loading="lazy"></button>').join('') + '</div>' : '') + '</div>';
     for (const c of $$('.cartao.sel')) c.classList.remove('sel'); const c = $('#lista [data-id="' + it.id + '"].cartao'); if (c) c.classList.add('sel');
   }
-  function ficha(id) { const i = visiveis.findIndex(x => x.id === id); if (i < 0) return; idx = i; desenhaFicha(); }
-  function fechaFicha() { fichaAberta = false; fichaEl.hidden = true; for (const c of $$('.cartao.sel')) c.classList.remove('sel'); }
+  function ficha(id) { let i = visiveis.findIndex(x => x.id === id); if (i < 0 && porId[id]) { limpa(); i = visiveis.findIndex(x => x.id === id); } if (i < 0) return; idx = i; desenhaFicha(); }
+  function fechaFicha() { fichaAberta = false; fichaEl.hidden = true; if (vista === 'refs') foca(null); for (const c of $$('.cartao.sel')) c.classList.remove('sel'); }
   fichaEl.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if ('fichaX' in b.dataset) fechaFicha(); else if ('amplia' in b.dataset) abre(visiveis[idx].id); else if (b.dataset.passo) passo(+b.dataset.passo); else if (b.dataset.id) ficha(b.dataset.id); });
   function setVista(v2, alvo) {
-    vista = v2; document.body.classList.toggle('grade', v2 === 'grade'); for (const o of $('[data-filtro=vista]').children) { o.classList.toggle('on', o.dataset.v === v2); o.setAttribute('aria-pressed', o.dataset.v === v2); }
-    larg = 0; alt = 0; if (v2 === 'canvas') requestAnimationFrame(() => { tocou = false; ajusta(); if (alvo && pos[alvo]) enquadra(pos[alvo], 'largura', false); });
+    vista = v2; document.body.classList.toggle('grade', v2 === 'grade'); document.body.classList.toggle('refs', v2 === 'refs'); fechaFicha(); for (const o of $('[data-filtro=vista]').children) { o.classList.toggle('on', o.dataset.v === v2); o.setAttribute('aria-pressed', o.dataset.v === v2); }
+    larg = 0; alt = 0; if (v2 !== 'grade') requestAnimationFrame(() => { tocou = false; ajusta(); if (alvo && pos[alvo]) enquadra(pos[alvo], 'largura', false); });
   }
   $('#lista').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.id) ficha(b.dataset.id); else if (b.dataset.canvas) setVista('canvas', b.dataset.canvas); else if ('limpa' in b.dataset) limpa(); });
   function limpa() { filtro.kv = 'todos'; filtro.cap = 'todos'; filtro.pecas = false; filtro.q = ''; $('#busca').value = ''; for (const g of $$('.filtros .grupo')) { const f = g.dataset.filtro; if (f === 'vista') continue; for (const o of g.children) o.classList.toggle('on', f !== 'pecas' && o.dataset.v === 'todos'); } fechaFicha(); leiaute(); }
@@ -131,6 +177,7 @@
     clearTimeout(lodT); lodT = setTimeout(detalhe, 160);
   }
   function detalhe() { // troca a miniatura pela grande quando a tela cresce na vista
+    if (vista === 'grade') return;
     const pw = palco.clientWidth, ph = palco.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
     for (const it of visiveis) { if (it.alta) continue; const sx = it.x * v.k + v.x, sy = it.y * v.k + v.y, sw = it.W * v.k; if (sw * dpr > 800 && sx < pw && sx + sw > 0 && sy < ph && sy + it.H * v.k > 0) { it.alta = 1; const g = new Image(); g.onload = () => { it.img.src = g.src; }; g.src = it.g + '?v=' + it.v; } }
   }
@@ -145,7 +192,7 @@
     vai({ k, x: (pw - r.w * k) / 2 - r.x * k, y: modo === 'tudo' ? (ph - r.h * k) / 2 - (r.y || 0) * k : mg - (r.y || 0) * k }, suave);
   }
   const tudo = () => ({ x: 0, y: 0, w: Wm, h: Hm });
-  function inicio(suave) { const estreito = palco.clientWidth < 760; if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (pos.jc && filtro.cap === 'todos' && !filtro.pecas) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), estreito ? 'largura' : 'tudo', suave); }
+  function inicio(suave) { const estreito = palco.clientWidth < 760; if (vista === 'refs') { const a2 = R.kvs && R.kvs.jc, b2 = R.kvs && R.kvs.aa; return estreito && a2 ? enquadra({ x: a2.x - 40, y: a2.y - 60, w: b2.x + b2.w - a2.x + 80, h: a2.h + 240 }, 'tudo', suave) : enquadra(tudo(), 'tudo', suave); } if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (pos.jc && filtro.cap === 'todos' && !filtro.pecas) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), estreito ? 'largura' : 'tudo', suave); }
 
   const pts = new Map(); let mexeu = false, soma = 0, ant = null;
   const rel = e => { const r = palco.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
@@ -158,7 +205,7 @@
   const solta = e => { pts.delete(e.pointerId); ant = null; if (!pts.size) palco.classList.remove('arrasta'); };
   window.addEventListener('pointerup', solta); window.addEventListener('pointercancel', solta);
   palco.addEventListener('wheel', e => { e.preventDefault(); $('#dica').classList.add('some'); const p = rel(e), d = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY; zoomEm(p.x, p.y, Math.exp(-d * (e.ctrlKey ? 0.012 : 0.0016))); }, { passive: false });
-  palco.addEventListener('click', e => { const b = e.target.closest('.item'); if (b && !mexeu) ficha(b.dataset.id); });
+  palco.addEventListener('click', e => { if (mexeu) return; const b = e.target.closest('.item'); if (b) return ficha(b.dataset.id); if (vista !== 'refs') return; const n = e.target.closest('.no'); if (!n) { fechaFicha(); return foca(null); } if (n.dataset.id) ficha(n.dataset.id); else if (n.dataset.r) fichaRef(n.dataset.c, +n.dataset.r); if (n.dataset.c) foca(n.dataset.c); else foca(null); });
   palco.addEventListener('dragstart', e => e.preventDefault());
 
   $('.zoom').addEventListener('click', e => { const z = e.target.dataset.z; if (!z) return; const pw = palco.clientWidth / 2, ph = palco.clientHeight / 2; if (z === '+') zoomEm(pw, ph, 1.4); else if (z === '-') zoomEm(pw, ph, 1 / 1.4); else if (z === '1') zoomEm(pw, ph, 1 / v.k); else enquadra(tudo(), 'tudo'); });
@@ -171,6 +218,7 @@
   $('.filtros').addEventListener('click', e => {
     const c = e.target.closest('.chip'); if (!c) return; const g = c.parentElement, f = g.dataset.filtro;
     if (f === 'vista') { setVista(c.dataset.v); return; }
+    if (vista === 'refs') setVista('grade');
     if (f === 'pecas') { filtro.pecas = !filtro.pecas; c.classList.toggle('on', filtro.pecas); }
     else { filtro[f] = c.dataset.v; for (const o of g.children) o.classList.toggle('on', o === c); }
     for (const o of $$('.chip')) o.setAttribute('aria-pressed', o.classList.contains('on'));
@@ -225,11 +273,11 @@
   { let n = 0; const t = setInterval(() => { ajusta(); if (++n > 60) clearInterval(t); }, 250); }
 
   // partida
-  larg = 0; alt = 0; leiaute(); inicio(false); ajusta(); setTimeout(() => mundo.classList.add('vivo'), 900);
+  montaRede(); larg = 0; alt = 0; leiaute(); inicio(false); ajusta(); setTimeout(() => mundo.classList.add('vivo'), 900);
   setTimeout(() => $('#dica').classList.add('some'), 7000);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { leiaute(); if (!tocou) inicio(false); });
   Placa.iniciar(M);
-  const rota = () => { const h = location.hash.slice(1); if (h === 'placa' || h === 'creditos') folha(h); else if (h === 'canvas') setVista('canvas'); else if (h.startsWith('i=')) { const id = decodeURIComponent(h.slice(2)); ficha(id); abre(id); } };
+  const rota = () => { const h = location.hash.slice(1); if (h === 'placa' || h === 'creditos') folha(h); else if (h === 'canvas' || h === 'grade' || h === 'refs') setVista(h); else if (h.startsWith('i=')) { const id = decodeURIComponent(h.slice(2)); ficha(id); abre(id); } };
   rota(); window.addEventListener('hashchange', rota);
   window.DA = { M, v, filtro, leiaute, visiveis: () => visiveis, pos };
 })();

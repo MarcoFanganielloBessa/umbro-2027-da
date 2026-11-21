@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Roboto+Condensed:wght@900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
-<body class="grade">
+<body class="refs">
 
 <header class="barra">
   <div class="marca"><b>Umbro 2027</b><span> · Direção de Arte + Key Visual</span></div>
@@ -23,8 +23,9 @@
 
 <div class="filtros" role="toolbar" aria-label="Filtros">
   <div class="grupo" data-filtro="vista">
-    <button class="chip on" data-v="grade" aria-pressed="true">Grade</button>
-    <button class="chip" data-v="canvas" aria-pressed="false">Canvas</button>
+    <button class="chip on" data-v="refs" aria-pressed="true">Referências</button>
+    <button class="chip" data-v="grade" aria-pressed="false">Grade</button>
+    <button class="chip" data-v="canvas" aria-pressed="false">Livros</button>
   </div>
   <div class="grupo" data-filtro="kv">
     <button class="chip on" data-v="todos">Os dois KVs</button>
@@ -48,6 +49,7 @@
 
 <main id="palco" aria-label="Canvas dos dois key visuals">
   <div id="mundo">
+    <div id="rede"></div>
     <section class="chapa jc" id="chapa-jc">
       <div class="cabeca">
         <div class="dado">01 · Conceito do ano · 2027 · tinta + laranja de placa</div>
@@ -142,7 +144,7 @@
   </div>
 </div>
 <div class="mini" id="mini" aria-label="Minimapa"><div class="mini-mundo" id="mini-mundo"></div><div class="mini-vista" id="mini-vista"></div></div>
-<p class="dica" id="dica">Arraste para andar · roda ou pinça para zoom · clique numa tela para abrir</p>
+<p class="dica" id="dica">Arraste para andar · roda ou pinça para zoom · clique numa referência para ver o caminho até o KV</p>
 
 <!-- tela cheia -->
 <div class="cheia" id="cheia" hidden>
@@ -195,7 +197,7 @@
   </div>
 </div>
 
-<script src="placa.js?v=6"></script>
-<script src="app.js?v=6"></script>
+<script src="placa.js?v=8"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>
