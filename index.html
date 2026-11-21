@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Umbro 2027 · Direção de Arte</title>
+<meta name="description" content="Ferramenta de Direção de Arte dos dois key visuals da Umbro Brasil 2027: O Jogo Continua e Arquivo Aberto.">
+<meta name="theme-color" content="#111111">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Roboto+Condensed:wght@900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="barra">
+  <div class="marca"><b>Umbro 2027</b><span> · Direção de Arte + Key Visual</span></div>
+  <nav class="acoes">
+    <button class="bt bt-placa" data-abre="placa">Monte a placa</button>
+    <button class="bt" data-abre="creditos">Créditos</button>
+  </nav>
+</header>
+
+<div class="filtros" role="toolbar" aria-label="Filtros">
+  <div class="grupo" data-filtro="kv">
+    <button class="chip on" data-v="todos">Os dois KVs</button>
+    <button class="chip" data-v="jc"><i class="pt jc"></i>O Jogo Continua</button>
+    <button class="chip" data-v="aa"><i class="pt aa"></i>Arquivo Aberto</button>
+  </div>
+  <div class="grupo" data-filtro="cap">
+    <button class="chip on" data-v="todos">Tudo</button>
+    <button class="chip" data-v="repertorio">Repertório</button>
+    <button class="chip" data-v="exploracao">Exploração</button>
+    <button class="chip" data-v="sistema">Sistema</button>
+    <button class="chip" data-v="kv">Só key visuals</button>
+    <button class="chip" data-v="aplicacoes">Só aplicações</button>
+  </div>
+  <div class="grupo" data-filtro="pecas">
+    <button class="chip" data-v="sim">Peças em tamanho real</button>
+  </div>
+  <span class="conta" id="conta"></span>
+</div>
+
+<main id="palco" aria-label="Canvas dos dois key visuals">
+  <div id="mundo">
+    <section class="chapa jc" id="chapa-jc">
+      <div class="cabeca">
+        <div class="dado">01 · Conceito do ano · 2027 · tinta + laranja de placa</div>
+        <div class="cab-linha">
+          <svg id="num-jc" class="num" aria-hidden="true"></svg>
+          <div>
+            <h2>O jogo<br>continua.</h2>
+            <p>A placa do quarto árbitro: sete plaquetas, as apagadas à vista. O número é sempre um fato.</p>
+            <button class="cta" data-abre="placa">Monte a placa →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapa comum" id="chapa-comum">
+      <div class="dado">O que une · contrato comum</div>
+      <h2>Dois KVs,<br>um contrato.</h2>
+      <p class="lead">Tudo que está nesta coluna vale nos dois territórios. O que muda é o tempo da imagem: tratado é arquivo, limpo é agora.</p>
+
+      <div class="amostra tipos">
+        <div><span class="t-tit">O jogo continua.</span><small>Título · Helvetica Neue Condensed Black · caixa alta · entrelinha 84–88% · −1%</small></div>
+        <div><span class="t-txt">A Copa delas chega ao Maracanã.</span><small>Texto · Neue Haas Grotesk Display · 55 Roman e 65 Medium</small></div>
+        <div><span class="t-dad">Acréscimo · 1941–1979</span><small>Dado · TX-02 Condensed · caixa alta · +4%</small></div>
+      </div>
+
+      <div class="amostra cores">
+        <div class="cor" style="--c:#111111;--f:#fff"><b>Tinta</b>#111111</div>
+        <div class="cor" style="--c:#EFEBE1"><b>Papel</b>#EFEBE1</div>
+        <div class="cor borda" style="--c:#FFFFFF"><b>Branco</b>#FFFFFF</div>
+      </div>
+
+      <div class="amostra grade">
+        <svg viewBox="0 0 300 400" aria-label="Grade de 12 colunas"><rect width="300" height="400" fill="#111"/><g id="colunas"></g><rect x="15" y="15" width="270" height="349" fill="none" stroke="#fff" stroke-width="1"/><rect x="15" y="364" width="270" height="1.5" fill="#fff"/><text x="15" y="388" fill="#fff" font-size="10" font-family="Inter Tight" font-weight="500">O jogo continua.</text><rect x="261" y="374" width="24" height="15" fill="none" stroke="#fff"/></svg>
+        <ul>
+          <li><b>Grade</b>12 colunas. Margem de 5% do lado menor. Faixa de rodapé de 9% da altura.</li>
+          <li><b>Assinatura</b>“O jogo continua.” fecha toda peça, uma vez, na faixa de rodapé.</li>
+          <li><b>Logo</b>Vetor oficial, uma cor, canto inferior direito, uma vez por peça. Performance assina O Jogo Continua; Lifestyle assina Arquivo Aberto.</li>
+          <li><b>Textura</b>Uma camada viva por peça, em Multiplicar ou Tela.</li>
+        </ul>
+      </div>
+
+      <div class="amostra formatos">
+        <div style="--a:3/4"><i></i>Pôster<small>1200×1600</small></div>
+        <div style="--a:2/3"><i></i>Abrigo<small>1200×1800</small></div>
+        <div style="--a:2/1"><i></i>Metrô<small>2400×1200</small></div>
+        <div style="--a:9/16"><i></i>Story<small>1080×1920</small></div>
+        <div style="--a:4/5"><i></i>Feed<small>1080×1350</small></div>
+      </div>
+
+      <div class="dado sep">O que separa</div>
+      <table class="separa">
+        <thead><tr><th></th><th class="c-jc">O Jogo Continua</th><th class="c-aa">Arquivo Aberto</th></tr></thead>
+        <tbody>
+          <tr><th>Tempo</th><td>o que está acontecendo</td><td>o que já aconteceu</td></tr>
+          <tr><th>Imagem</th><td>limpa: foto direta, uma luz, noite; limiar em duas tintas</td><td>tratada: recorte, retícula, papel, scan</td></tr>
+          <tr><th>Fundo</th><td>tinta</td><td>papel</td></tr>
+          <tr><th>Acento</th><td><i class="pt jc"></i>laranja de placa #FF4A1C</td><td><i class="pt aa"></i>royal #0033A0</td></tr>
+          <tr><th>Dispositivo</th><td>a placa: numeral de 7 plaquetas</td><td>recorte branco + sombra, dupla acervo–hoje</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="chapa aa" id="chapa-aa">
+      <div class="cabeca">
+        <div class="dado">02 · Campanha 1 · jan–abr 2027 · papel + royal</div>
+        <div class="cab-linha">
+          <div class="reticula" aria-hidden="true"></div>
+          <div>
+            <h2>Arquivo<br>aberto</h2>
+            <p>O arquivo guardou a camisa. Não guardou quem vestiu. Recorte branco, sombra e retícula royal sobre papel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="controles">
+  <div class="zoom">
+    <button data-z="-" aria-label="Afastar">−</button>
+    <button data-z="1" id="pct" aria-label="Zoom 100%">100%</button>
+    <button data-z="+" aria-label="Aproximar">+</button>
+    <button data-z="0">Ver tudo</button>
+  </div>
+  <div class="atalhos">
+    <button data-vai="jc"><kbd>1</kbd> Jogo Continua</button>
+    <button data-vai="comum"><kbd>2</kbd> O que une</button>
+    <button data-vai="aa"><kbd>3</kbd> Arquivo Aberto</button>
+  </div>
+</div>
+<div class="mini" id="mini" aria-label="Minimapa"><div class="mini-mundo" id="mini-mundo"></div><div class="mini-vista" id="mini-vista"></div></div>
+<p class="dica" id="dica">Arraste para andar · roda ou pinça para zoom · clique numa tela para abrir</p>
+
+<!-- tela cheia -->
+<div class="cheia" id="cheia" hidden>
+  <div class="ch-topo">
+    <div class="ch-id"><span id="ch-cod"></span><b id="ch-tit"></b><small id="ch-meta"></small></div>
+    <div class="ch-dir"><span id="ch-n"></span><button id="ch-x" aria-label="Fechar">Fechar ✕</button></div>
+  </div>
+  <button class="ch-seta e" id="ch-ant" aria-label="Anterior">←</button>
+  <div class="ch-img" id="ch-img"></div>
+  <button class="ch-seta d" id="ch-prox" aria-label="Próxima">→</button>
+  <div class="ch-pe"><span id="ch-cred"></span><span class="ch-ajuda">← → seguem · Esc fecha</span></div>
+</div>
+
+<!-- monte a placa -->
+<div class="folha" id="placa" hidden>
+  <div class="fo-topo"><div class="dado">Ferramenta · O Jogo Continua</div><button class="fo-x" data-fecha>Voltar ao canvas ✕</button></div>
+  <div class="pl">
+    <form class="pl-form" id="pl-form" autocomplete="off">
+      <h2>Monte a placa</h2>
+      <p class="lead">O número é sempre um fato. A linha de rodapé diz qual.</p>
+      <label>Número <small>0–999, com o +</small><input id="pl-num" inputmode="tel" maxlength="5" value="+27" spellcheck="false"></label>
+      <label>Linha de rodapé<input id="pl-cap" maxlength="60" value="A Copa delas chega ao Maracanã."></label>
+      <div class="duas">
+        <label>Dado, à esquerda<input id="pl-dl" maxlength="24" value="Acréscimo"></label>
+        <label>Dado, à direita<input id="pl-dr" maxlength="24" value="2027 · Maracanã"></label>
+      </div>
+      <fieldset><legend>Formato</legend><div class="ops" id="pl-fmt"></div></fieldset>
+      <fieldset><legend>Cor <small>laranja de placa e as contraprovas do guia</small></legend><div class="ops" id="pl-cor"></div></fieldset>
+      <fieldset><legend>Matéria</legend><div class="ops" id="pl-modo"></div></fieldset>
+      <fieldset><legend>Fundo <small>tinta, papel ou foto em limiar de duas tintas</small></legend><div class="fundos" id="pl-fundo"></div></fieldset>
+      <button type="button" class="baixar" id="pl-baixar">Baixar PNG</button>
+      <p class="nota" id="pl-nota"></p>
+    </form>
+    <div class="pl-vista"><div class="pl-peca" id="pl-peca"></div></div>
+  </div>
+</div>
+
+<!-- créditos -->
+<div class="folha papel" id="creditos" hidden>
+  <div class="fo-topo"><div class="dado">Créditos e limites</div><button class="fo-x" data-fecha>Voltar ao canvas ✕</button></div>
+  <div class="cr">
+    <h2>Créditos das fotos</h2>
+    <p class="lead"><b>Marcação de lugar.</b> No Arquivo Aberto, a parede, a sombra, a camisa em mesa e a camisa vestida vêm de imagens geradas em rodada anterior, assim como as cenas de abrigo, metrô e camiseta: ficam no lugar de foto real e de ensaio próprio. Em O Jogo Continua só há foto real; o gesto de levantar a placa (Samson Ssemakadde, CC0) marca o lugar de um ensaio próprio.</p>
+    <div id="cr-lista"></div>
+    <h3>Tipos nesta página</h3>
+    <p>Os tipos da marca são licenciados e não podem ser servidos na web. Aqui entram substitutos de licença aberta (SIL OFL): Roboto Condensed Black no lugar de Helvetica Neue Condensed Black, Inter Tight no lugar de Neue Haas Grotesk e JetBrains Mono no lugar de TX-02. As telas e peças mostram os tipos certos.</p>
+    <h3>Marca</h3>
+    <p>Trabalho acadêmico (ESPM, Plano de Marketing Umbro Brasil 2027). Umbro e o losango são marcas de seus titulares; uso sem fim comercial.</p>
+    <p class="dado" id="cr-gerado"></p>
+  </div>
+</div>
+
+<script src="placa.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
