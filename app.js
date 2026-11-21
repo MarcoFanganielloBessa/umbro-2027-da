@@ -177,6 +177,7 @@
   setTimeout(() => $('#dica').classList.add('some'), 7000);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { leiaute(); if (!tocou) inicio(false); });
   Placa.iniciar(M);
-  const h = location.hash.slice(1); if (h === 'placa' || h === 'creditos') folha(h); else if (h.startsWith('i=')) abre(decodeURIComponent(h.slice(2)));
+  const rota = () => { const h = location.hash.slice(1); if (h === 'placa' || h === 'creditos') folha(h); else if (h.startsWith('i=')) abre(decodeURIComponent(h.slice(2))); };
+  rota(); window.addEventListener('hashchange', rota);
   window.DA = { M, v, filtro, leiaute, visiveis: () => visiveis, pos };
 })();
