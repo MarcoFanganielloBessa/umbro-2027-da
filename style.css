@@ -132,7 +132,7 @@ body.grade #palco, body.grade .controles, body.grade .mini, body.grade .dica { d
 .en:hover img, .en:focus-visible img { outline: 4px solid var(--ac); }
 .en span { min-width: 0; }
 .en small { display: block; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; opacity: .65; margin-bottom: 12px; }
-.en b { display: block; font: 900 clamp(34px, 5.4vw, 84px)/.86 var(--tit); text-transform: uppercase; letter-spacing: -.01em; }
+.en b { display: block; font: 900 clamp(30px, 4.3vw, 84px)/.86 var(--tit); text-transform: uppercase; letter-spacing: -.01em; }
 .en em { display: block; font-style: normal; font-size: 15px; line-height: 1.35; margin-top: 14px; opacity: .8; max-width: 34ch; }
 .en u { display: inline-block; text-decoration: none; margin-top: 16px; font: 500 12px/1 var(--dad); letter-spacing: .04em; text-transform: uppercase; color: var(--ac); }
 .terr { padding: 30px 36px 44px; --suave: #5E5C57; --fio: var(--tinta); }
@@ -253,7 +253,7 @@ fieldset legend { margin-bottom: 8px; }
 @media (max-width: 760px) {
   .marca span { display: none; }
   .entrada { grid-template-columns: 1fr; }
-  .en { padding: 20px 16px; gap: 16px; } .en img { max-width: 40%; max-height: 34vh; } .en em { font-size: 13px; }
+  .en { padding: 20px 16px; gap: 16px; } .en b { font-size: 34px; } .en img { max-width: 40%; max-height: 34vh; } .en em { font-size: 13px; }
   .terr { padding: 22px 16px 34px; } .terr-cab h2 { font-size: 32px; }
   .cartoes { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px 10px; }
   .une { padding: 20px 16px; } .une span:last-child { margin-left: 0; }
