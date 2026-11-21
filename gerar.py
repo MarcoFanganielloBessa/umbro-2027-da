@@ -277,7 +277,7 @@ def main():
                 for r in c['refs']:
                     if r.get('id') and r['id'] not in vistos:
                         vistos.add(r['id']); p = r['credito'].split(' · ')
-                        extra.append(dict(titulo=r['titulo'], autor=p[0], licenca=p[-1] if 'CC' in p[-1] or 'domínio' in p[-1] else 'referência, com link', pagina=r.get('link', '')))
+                        extra.append(dict(titulo=r['titulo'], autor=p[0], licenca=p[-1] if 'CC' in p[-1] or 'domínio' in p[-1] else ('referência, com link' if r.get('link') else 'referência'), pagina=r.get('link', '')))
         cred.insert(0, dict(nome='Canvas de referências · fontes de cada referência', itens=extra))
     man = dict(gerado=time.strftime('%d/%m/%Y %H:%M'), caps=CAPS, itens=itens, fundos=fundos, creditos=cred, rede=rede,
                fora=[dict(arquivo=k, motivo=v) for k, v in FORA.items()])
