@@ -192,7 +192,7 @@
     vai({ k, x: (pw - r.w * k) / 2 - r.x * k, y: modo === 'tudo' ? (ph - r.h * k) / 2 - (r.y || 0) * k : mg - (r.y || 0) * k }, suave);
   }
   const tudo = () => ({ x: 0, y: 0, w: Wm, h: Hm });
-  function inicio(suave) { const estreito = palco.clientWidth < 760; if (vista === 'refs') { const a2 = R.kvs && R.kvs.jc, b2 = R.kvs && R.kvs.aa; return estreito && a2 ? enquadra({ x: a2.x - 40, y: a2.y - 60, w: b2.x + b2.w - a2.x + 80, h: a2.h + 240 }, 'tudo', suave) : enquadra(tudo(), 'tudo', suave); } if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (pos.jc && filtro.cap === 'todos' && !filtro.pecas) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), estreito ? 'largura' : 'tudo', suave); }
+  function inicio(suave) { const estreito = palco.clientWidth < 760; if (vista === 'refs') { const a2 = R.kvs && R.kvs.jc, b2 = R.kvs && R.kvs.aa; if (!a2) return enquadra(tudo(), 'tudo', suave); const pw = palco.clientWidth, ph = palco.clientHeight; if (estreito) return enquadra({ x: a2.x - 40, y: a2.y - 60, w: b2.x + b2.w - a2.x + 80, h: a2.h + 240 }, 'tudo', suave); if (pw / ph < 1.25) return enquadra({ x: 1000, y: a2.y - 260, w: R.W - 2000, h: a2.h + 560 }, 'tudo', suave); return enquadra(tudo(), 'tudo', suave); } if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (pos.jc && filtro.cap === 'todos' && !filtro.pecas) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), estreito ? 'largura' : 'tudo', suave); }
 
   const pts = new Map(); let mexeu = false, soma = 0, ant = null;
   const rel = e => { const r = palco.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
