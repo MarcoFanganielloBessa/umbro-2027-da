@@ -1,5 +1,5 @@
 {
- "gerado": "20/11/2026 23:31",
+ "gerado": "20/11/2026 23:32",
  "caps": [
   "abertura",
   "repertorio",
@@ -1726,6 +1726,131 @@
  ],
  "creditos": [
   {
+   "nome": "Canvas de referências · fontes de cada referência",
+   "itens": [
+    {
+     "titulo": "Placa manual, campo de terra",
+     "autor": "Samson Ssemakadde",
+     "licenca": "CC0",
+     "pagina": "https://commons.wikimedia.org/wiki/File:Substitution_board.jpg"
+    },
+    {
+     "titulo": "Placa de LED, estádio",
+     "autor": "Keiteay",
+     "licenca": "CC BY 4.0",
+     "pagina": "https://commons.wikimedia.org/wiki/File:Substitutions.jpg"
+    },
+    {
+     "titulo": "Placar de clube amador",
+     "autor": "Werner100359",
+     "licenca": "CC BY-SA 4.0",
+     "pagina": "https://commons.wikimedia.org/wiki/File:Union_Geretsberg_gegen_ASK%C3%96_Gosau_(O.%C3%96_Landescup_2024-07-20)_59.jpg"
+    },
+    {
+     "titulo": "A quarta árbitra",
+     "autor": "Samson Ssemakadde",
+     "licenca": "referência, com link",
+     "pagina": "https://commons.wikimedia.org/wiki/File:Substitution_board_being_used_in_a_football_match.jpg"
+    },
+    {
+     "titulo": "Numeral gigante e tabela minúscula",
+     "autor": "Are.na",
+     "licenca": "referência, com link",
+     "pagina": "https://www.are.na/block/42265368"
+    },
+    {
+     "titulo": "Números soltos no campo",
+     "autor": "Are.na",
+     "licenca": "referência, com link",
+     "pagina": "https://www.are.na/block/25162806"
+    },
+    {
+     "titulo": "HSV · “600 Minutes Stoppage Time”",
+     "autor": "ADC Europe",
+     "licenca": "referência, com link",
+     "pagina": "https://adceurope.org/project/600-minutes-stoppage-time"
+    },
+    {
+     "titulo": "LaLiga · parceiro oficial do acréscimo",
+     "autor": "NSS Sports",
+     "licenca": "referência, com link",
+     "pagina": "https://nss-sports.com/en/long-form/47178"
+    },
+    {
+     "titulo": "Umbro · AW26 “Away Days”",
+     "autor": "umbro.com",
+     "licenca": "referência, com link",
+     "pagina": "https://umbro.com/en/style/campaigns/aw26-away-days-collection"
+    },
+    {
+     "titulo": "Umbro · SS26 “Home”",
+     "autor": "umbro.com",
+     "licenca": "referência, com link",
+     "pagina": "https://umbro.com/en/style/campaigns/ss26-home-collection"
+    },
+    {
+     "titulo": "FIFA · Brasil 2027 “Go Epic”",
+     "autor": "fifa.com",
+     "licenca": "referência, com link",
+     "pagina": ""
+    },
+    {
+     "titulo": "Recorte branco no lugar do corpo",
+     "autor": "Are.na",
+     "licenca": "referência, com link",
+     "pagina": "https://www.are.na/block/12367289"
+    },
+    {
+     "titulo": "Figura branca, quase apagada",
+     "autor": "Are.na",
+     "licenca": "referência, com link",
+     "pagina": "https://www.are.na/block/45769785"
+    },
+    {
+     "titulo": "Uma tinta só, retícula aparente",
+     "autor": "Are.na",
+     "licenca": "referência, com link",
+     "pagina": "https://www.are.na/block/50549592"
+    },
+    {
+     "titulo": "Códigos de produto como título",
+     "autor": "Are.na",
+     "licenca": "referência, com link",
+     "pagina": "https://www.are.na/block/38423786"
+    },
+    {
+     "titulo": "Seleção holandesa em Zeist, 1973",
+     "autor": "Hans Peters / Anefo",
+     "licenca": "CC0",
+     "pagina": "https://commons.wikimedia.org/wiki/File:Training_nationaal_dames-voetbalelftal_in_Zeist,_Jose_van_Hoof_(voorgrond)_tijde,_Bestanddeelnr_926-7068.jpg"
+    },
+    {
+     "titulo": "Camisa 9, Lewes Ladies, 2014",
+     "autor": "jamesboyes",
+     "licenca": "CC BY 2.0",
+     "pagina": "https://www.flickr.com/photos/37972999@N07/14138112113"
+    },
+    {
+     "titulo": "Torcida",
+     "autor": "Ali Brohi",
+     "licenca": "CC BY 2.0",
+     "pagina": "https://www.flickr.com/photos/76579169@N00/178821820"
+    },
+    {
+     "titulo": "Bola de couro",
+     "autor": "p_a_h",
+     "licenca": "CC BY 2.0",
+     "pagina": "https://www.flickr.com/photos/64654599@N00/5459813418"
+    },
+    {
+     "titulo": "Chuteira de couro",
+     "autor": "muffinn",
+     "licenca": "CC BY 2.0",
+     "pagina": "https://www.flickr.com/photos/26445715@N00/9142693548"
+    }
+   ]
+  },
+  {
    "nome": "O Jogo Continua · fotos em limiar (Flickr via Openverse)",
    "itens": [
     {
@@ -2040,6 +2165,35 @@
      {
       "refs": [
        {
+        "id": "arena-42265368",
+        "titulo": "Numeral gigante e tabela minúscula",
+        "credito": "Are.na · bloco 42265368 · referência, não material de uso",
+        "link": "https://www.are.na/block/42265368",
+        "peq": true,
+        "src": "img/r/arena-42265368.webp",
+        "w": 800,
+        "h": 579
+       },
+       {
+        "id": "arena-25162806",
+        "titulo": "Números soltos no campo",
+        "credito": "Are.na · bloco 25162806 · referência, não material de uso",
+        "link": "https://www.are.na/block/25162806",
+        "peq": true,
+        "src": "img/r/arena-25162806.webp",
+        "w": 618,
+        "h": 800
+       }
+      ],
+      "licao": "Contraste de escala entre dado e número: o tempo vira composição.",
+      "exp": {
+       "item": "jc-tela-13",
+       "rotulo": "Grade e hierarquia"
+      }
+     },
+     {
+      "refs": [
+       {
         "id": "ref-hsv",
         "titulo": "HSV · “600 Minutes Stoppage Time”",
         "texto": "O placar do estádio anunciou 600 minutos de acréscimo numa ação de utilidade pública.",
@@ -2134,6 +2288,73 @@
      {
       "refs": [
        {
+        "id": "arena-12367289",
+        "titulo": "Recorte branco no lugar do corpo",
+        "credito": "Are.na · bloco 12367289 · referência, não material de uso",
+        "link": "https://www.are.na/block/12367289",
+        "peq": true,
+        "src": "img/r/arena-12367289.webp",
+        "w": 500,
+        "h": 646
+       },
+       {
+        "id": "arena-45769785",
+        "titulo": "Figura branca, quase apagada",
+        "credito": "Are.na · bloco 45769785 · referência, não material de uso",
+        "link": "https://www.are.na/block/45769785",
+        "peq": true,
+        "src": "img/r/arena-45769785.webp",
+        "w": 640,
+        "h": 800
+       }
+      ],
+      "licao": "O vazio tem contorno e por isso tem presença: a ausência como imagem, para o que o arquivo não registrou.",
+      "exp": {
+       "item": "aa-livro-21",
+       "rotulo": "S2 · recorte e sombra"
+      }
+     },
+     {
+      "refs": [
+       {
+        "id": "arena-50549592",
+        "titulo": "Uma tinta só, retícula aparente",
+        "credito": "Are.na · bloco 50549592 · referência, não material de uso",
+        "link": "https://www.are.na/block/50549592",
+        "peq": true,
+        "src": "img/r/arena-50549592.webp",
+        "w": 640,
+        "h": 800
+       }
+      ],
+      "licao": "Monocromia como assinatura de série. Aqui: royal só em retícula, ponto a 45°.",
+      "exp": {
+       "item": "aa-livro-12",
+       "rotulo": "E7 · retícula"
+      }
+     },
+     {
+      "refs": [
+       {
+        "id": "arena-38423786",
+        "titulo": "Códigos de produto como título",
+        "credito": "Are.na · bloco 38423786 · referência, não material de uso",
+        "link": "https://www.are.na/block/38423786",
+        "peq": true,
+        "src": "img/r/arena-38423786.webp",
+        "w": 800,
+        "h": 683
+       }
+      ],
+      "licao": "O código do acervo pode ser a manchete.",
+      "exp": {
+       "item": "aa-livro-24",
+       "rotulo": "S5 · tipografia"
+      }
+     },
+     {
+      "refs": [
+       {
         "item": "aa-livro-03"
        }
       ],
@@ -2158,25 +2379,73 @@
      {
       "refs": [
        {
-        "item": "aa-livro-12"
-       }
-      ],
-      "licao": "Retícula de ponto a 45°, 80 a 100 pontos na largura da camisa. Royal só em retícula.",
-      "exp": {
-       "item": "aa-livro-23",
-       "rotulo": "S4 · cor"
-      }
-     },
-     {
-      "refs": [
-       {
-        "item": "aa-livro-17"
+        "id": "anefo-zeist-1973",
+        "titulo": "Seleção holandesa em Zeist, 1973",
+        "credito": "Hans Peters / Anefo · Wikimedia Commons · CC0",
+        "link": "https://commons.wikimedia.org/wiki/File:Training_nationaal_dames-voetbalelftal_in_Zeist,_Jose_van_Hoof_(voorgrond)_tijde,_Bestanddeelnr_926-7068.jpg",
+        "src": "img/r/anefo-zeist-1973.webp",
+        "w": 1920,
+        "h": 2898
        }
       ],
       "licao": "O mesmo dispositivo em foto real: Anefo, Zeist, 1973, CC0.",
       "exp": {
        "item": "aa-contraprova-acervo-real",
-       "rotulo": "Contraprova · acervo real"
+       "rotulo": "E53–E58 · acervo real"
+      }
+     },
+     {
+      "refs": [
+       {
+        "id": "aa-fonte-158",
+        "titulo": "Camisa 9, Lewes Ladies, 2014",
+        "credito": "jamesboyes · Flickr · CC BY 2.0",
+        "link": "https://www.flickr.com/photos/37972999@N07/14138112113",
+        "src": "img/r/aa-fonte-158.webp",
+        "w": 1479,
+        "h": 1600
+       },
+       {
+        "id": "aa-fonte-257",
+        "titulo": "Torcida",
+        "credito": "Ali Brohi · Flickr · CC BY 2.0",
+        "link": "https://www.flickr.com/photos/76579169@N00/178821820",
+        "src": "img/r/aa-fonte-257.webp",
+        "w": 810,
+        "h": 660
+       }
+      ],
+      "licao": "O dispositivo fica e o conteúdo varia: dez fotos reais diferentes.",
+      "exp": {
+       "item": "aa-peca-v06",
+       "rotulo": "V01–V10 · dez fotos reais"
+      }
+     },
+     {
+      "refs": [
+       {
+        "id": "aa-fonte-a-067",
+        "titulo": "Bola de couro",
+        "credito": "p_a_h · Flickr · CC BY 2.0",
+        "link": "https://www.flickr.com/photos/64654599@N00/5459813418",
+        "src": "img/r/aa-fonte-a-067.webp",
+        "w": 1920,
+        "h": 1280
+       },
+       {
+        "id": "aa-fonte-a-034",
+        "titulo": "Chuteira de couro",
+        "credito": "muffinn · Flickr · CC BY 2.0",
+        "link": "https://www.flickr.com/photos/26445715@N00/9142693548",
+        "src": "img/r/aa-fonte-a-034.webp",
+        "w": 2047,
+        "h": 1365
+       }
+      ],
+      "licao": "Quatro peças do acervo: camisa, chuteira, bola, medalha. Fora do corpo, a peça ganha fundo branco próprio.",
+      "exp": {
+       "item": "aa-livro-43",
+       "rotulo": "N5 · ficha e tag"
       }
      }
     ]

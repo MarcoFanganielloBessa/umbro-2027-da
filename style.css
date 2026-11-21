@@ -218,6 +218,8 @@ button.no:hover img, button.no:focus-visible img, .no.on img { outline: 5px soli
 .fi-ref .lic { font: 500 19px/1.25 var(--txt); color: var(--branco); border-left: 4px solid var(--ac); padding-left: 12px; }
 .fi-ref .fonte { display: inline-block; margin: 4px 0 6px; padding: 10px 12px; border: 1px solid #555; color: inherit; text-decoration: none; font: 400 11px/1 var(--dad); letter-spacing: .04em; text-transform: uppercase; }
 .fi-ref .fonte:hover { background: var(--branco); color: var(--tinta); }
+.fi-img.peq { cursor: default; padding: 16px; } .fi-img.peq img { max-width: 220px; max-height: 220px; margin: 0 auto; }
+.fi-ref .fi-img { cursor: default; }
 .levou { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
 .levou button { text-align: left; } .levou img { display: block; width: 100%; outline: 1px solid rgba(128,128,128,.35); outline-offset: -1px; }
 .levou span { display: block; margin-top: 6px; font: 400 10px/1.3 var(--dad); letter-spacing: .03em; text-transform: uppercase; color: #A5A29A; }

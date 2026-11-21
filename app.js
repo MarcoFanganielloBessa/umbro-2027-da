@@ -118,7 +118,7 @@
   function fichaRef(key, ri) {
     const { kv, c } = R.cad[key], r = c.refs[ri], ex = porId[c.exp.item], K = porId[M.rede.lados[kv].kv]; fichaAberta = false; fichaEl.hidden = false; fichaEl.className = 'ficha ' + kv;
     fichaEl.innerHTML = '<header><span class="cod">Referência</span><span class="dado">' + KVN[kv] + '</span><button data-ficha-x aria-label="Fechar a ficha">✕</button></header><div class="fi-corpo fi-ref">' +
-      (r.src ? '<div class="fi-img"><img src="' + r.src + '" alt="' + esc(r.titulo) + '"></div>' : '') + '<h3>' + esc(r.titulo) + '</h3>' + (r.texto ? '<p>' + esc(r.texto) + '</p>' : '') +
+      (r.src ? '<div class="fi-img' + (r.peq ? ' peq' : '') + '"><img src="' + r.src + '" alt="' + esc(r.titulo) + '"></div>' : '') + '<h3>' + esc(r.titulo) + '</h3>' + (r.texto ? '<p>' + esc(r.texto) + '</p>' : '') +
       '<dl><dt>Crédito</dt><dd>' + esc(r.credito) + '</dd></dl>' + (r.link ? '<a class="fonte" href="' + esc(r.link) + '" target="_blank" rel="noopener">Abrir a fonte ↗</a>' : '') +
       '<h4>O que ensinou</h4><p class="lic">' + esc(c.licao) + '</p><h4>Levou a</h4><div class="levou"><button data-id="' + ex.id + '"><img src="' + ex.t + '?v=' + ex.v + '" alt=""><span>' + esc(c.exp.rotulo) + '</span></button><button data-id="' + K.id + '"><img src="' + K.t + '?v=' + K.v + '" alt=""><span>Key visual · ' + KVN[kv] + '</span></button></div></div>';
   }
@@ -248,7 +248,7 @@
   function folha(id) { for (const f of $$('.folha')) f.hidden = f.id !== id; if (id) { history.replaceState(null, '', '#' + id); if (id === 'placa' && Placa.desenha) Placa.desenha(); } else history.replaceState(null, '', location.pathname + location.search); }
   document.addEventListener('click', e => { const a = e.target.closest('[data-abre]'); if (a) { if (a.closest('#palco') && mexeu) return; folha(a.dataset.abre); } else if (e.target.closest('[data-fecha]')) folha(null); });
   $('#cr-lista').innerHTML = M.creditos.map(g => '<h3></h3><ul>' + g.itens.map(() => '<li><span><a target="_blank" rel="noopener"></a></span><span></span><span></span></li>').join('') + '</ul>').join('');
-  M.creditos.forEach((g, i) => { $$('#cr-lista h3')[i].textContent = g.nome; const lis = $$('#cr-lista ul')[i].children; g.itens.forEach((c, j) => { const [a, b, d] = lis[j].children; a.firstChild.href = c.pagina; a.firstChild.textContent = c.titulo; b.textContent = c.autor; if (c.uso) { const em = document.createElement('em'); em.textContent = ' · ' + c.uso + (c.nota ? ' (' + c.nota + ')' : ''); b.append(em); } d.textContent = c.licenca; }); });
+  M.creditos.forEach((g, i) => { $$('#cr-lista h3')[i].textContent = g.nome; const lis = $$('#cr-lista ul')[i].children; g.itens.forEach((c, j) => { const [a, b, d] = lis[j].children; if (c.pagina) a.firstChild.href = c.pagina; a.firstChild.textContent = c.titulo; b.textContent = c.autor; if (c.uso) { const em = document.createElement('em'); em.textContent = ' · ' + c.uso + (c.nota ? ' (' + c.nota + ')' : ''); b.append(em); } d.textContent = c.licenca; }); });
   $('#cr-gerado').textContent = 'Atualizado em ' + M.gerado + ' · ' + M.itens.length + ' itens';
 
   // teclado
