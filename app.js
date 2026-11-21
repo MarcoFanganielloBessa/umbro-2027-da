@@ -8,7 +8,10 @@
   const palco = $('#palco'), mundo = $('#mundo');
   const chapa = { jc: $('#chapa-jc'), comum: $('#chapa-comum'), aa: $('#chapa-aa') };
   chapa.jc.style.width = chapa.aa.style.width = (G.cw + 2 * G.pad) + 'px'; chapa.comum.style.width = G.comum + 'px';
-  const filtro = { kv: 'todos', cap: 'todos', pecas: false };
+  const filtro = { kv: 'todos', cap: 'todos', pecas: false, q: '' }; let vista = 'grade', sigGrade = null;
+  const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const TIPO = { tela: 'Tela do livro', peca: 'Peça em tamanho real', prancha: 'Prancha de exploração', foto: 'Foto em limiar de duas tintas' };
   const porId = {}; let visiveis = [], Wm = 1, Hm = 1; const pos = {};
 
   // numeral do cabeçalho e colunas da grade
@@ -21,7 +24,7 @@
     M.caps.forEach((cap, n) => { const h = document.createElement('div'); h.className = 'capitulo'; h.style.width = G.cw + 'px'; h.innerHTML = '<b><i>' + String(n).padStart(2, '0') + '</i>' + CAPN[cap] + '</b><span></span>'; chapa[kv].appendChild(h); cabs[kv + cap] = h; });
   }
   for (const it of M.itens) {
-    porId[it.id] = it;
+    porId[it.id] = it; it.busca = norm([it.codigo, it.titulo, CAPN[it.cap], KVN[it.kv], it.credito || ''].join(' '));
     it.H = it.tipo === 'tela' ? 331 : it.tipo === 'prancha' ? 760 : 460; it.W = Math.round(it.H * it.w / it.h);
     const b = document.createElement('button'); b.className = 'item'; b.style.width = it.W + 'px'; b.dataset.id = it.id; b.setAttribute('aria-label', it.codigo + ' ' + it.titulo);
     const im = document.createElement('img'); im.src = it.t + '?v=' + it.v; im.alt = ''; im.decoding = 'async'; im.draggable = false; im.style.height = it.H + 'px';
@@ -31,7 +34,7 @@
 
   // ── leiaute: reorganiza conforme os filtros ────────────────────────────────
   function leiaute() {
-    const ve = it => (filtro.cap === 'todos' || it.cap === filtro.cap) && (!filtro.pecas || it.tipo !== 'tela');
+    const ve = it => (filtro.cap === 'todos' || it.cap === filtro.cap) && (!filtro.pecas || it.tipo !== 'tela') && (!filtro.q || it.busca.includes(filtro.q));
     visiveis = []; let x = 0, alt = 0; const linhas = [];
     const ordem = ['jc', 'comum', 'aa'];
     for (const kv of ordem) {
@@ -66,6 +69,7 @@
     for (const kv of ordem) if (pos[kv]) { chapa[kv].style.height = alt + 'px'; pos[kv].h = alt; }
     Wm = Math.max(x, 1); Hm = Math.max(alt, 1); mundo.style.width = Wm + 'px'; mundo.style.height = Hm + 'px';
     $('#conta').textContent = visiveis.length + ' de ' + M.itens.length + ' itens';
+    const sig = JSON.stringify(filtro); if (sig !== sigGrade) { sigGrade = sig; grade(); }
     // minimapa
     const mm = $('#mini-mundo'); mm.style.height = Math.min(150, mm.clientWidth * Hm / Wm) + 'px';
     mm.innerHTML = ordem.filter(k => pos[k]).map(k => '<i class="' + k + '" style="left:' + (pos[k].x / Wm * 100) + '%;width:' + (pos[k].w / Wm * 100) + '%;height:100%"></i>').join('') +
@@ -73,8 +77,48 @@
     aplica();
   }
 
+  // ── grade: a entrada. Curadoria por KV e capítulo; a peça abre numa ficha ao lado
+  const cartao = it => '<button class="cartao" data-id="' + it.id + '"><img src="' + it.t + '?v=' + it.v + '" alt="" loading="lazy" width="' + it.w + '" height="' + it.h + '"><span class="leg"><b>' + esc(it.codigo) + '</b>' + esc(it.titulo) + '</span></button>';
+  function grade() {
+    const livre = filtro.kv === 'todos' && filtro.cap === 'todos' && !filtro.pecas && !filtro.q; let h = '';
+    const en = (kv, id, dado, tit, txt) => porId[id] ? '<button class="en ' + kv + '" data-id="' + id + '"><img src="' + porId[id].g + '?v=' + porId[id].v + '" alt="" width="' + porId[id].w + '" height="' + porId[id].h + '"><span><small class="dado">' + dado + '</small><b>' + tit + '</b><em>' + txt + '</em><u>Abrir o key visual →</u></span></button>' : '';
+    if (livre) h += '<div class="entrada">' + en('jc', 'jc-peca-kv', 'Conceito do ano · 2027', 'O jogo<br>continua.', 'A placa do quarto árbitro: sete plaquetas, as apagadas à vista. O número é sempre um fato.') + en('aa', 'aa-kv-poster', 'Campanha 1 · jan–abr 2027', 'Arquivo<br>aberto', 'O arquivo guardou a camisa. Não guardou quem vestiu.') + '</div>';
+    for (const kv of ['jc', 'aa']) {
+      const its = visiveis.filter(i => i.kv === kv);
+      if (its.length) {
+        h += '<section class="terr ' + kv + '"><header class="terr-cab"><h2>' + KVN[kv] + '</h2><span class="dado">' + its.length + (its.length > 1 ? ' itens' : ' item') + '</span></header>';
+        M.caps.forEach((cap, n) => { const g = its.filter(i => i.cap === cap); if (g.length) h += '<div class="cap-cab"><b><i>' + String(n).padStart(2, '0') + '</i>' + CAPN[cap] + '</b><span>' + g.length + '</span></div><div class="cartoes">' + g.map(cartao).join('') + '</div>'; });
+        h += '</section>';
+      }
+      if (kv === 'jc' && livre) h += '<button class="une" data-canvas="comum"><span class="dado">O que une</span><b>Dois KVs, um contrato.</b><span>Grade, tipo, assinatura, logo, formatos e base de cor · ver no canvas →</span></button>';
+    }
+    if (!visiveis.length) h = '<p class="nada">Nada aqui com esse filtro. <button data-limpa>Limpar filtros</button></p>';
+    const L = $('#lista'); L.innerHTML = h; L.scrollTop = 0;
+  }
+  const fichaEl = $('#ficha'); let fichaAberta = false;
+  function desenhaFicha() {
+    const it = visiveis[idx]; if (!it) return fechaFicha(); fichaAberta = true; fichaEl.hidden = false; fichaEl.className = 'ficha ' + it.kv;
+    const viz = visiveis.filter(x => x.kv === it.kv && x.cap === it.cap && x !== it); const i0 = Math.max(0, Math.min(viz.length - 9, viz.findIndex(x => visiveis.indexOf(x) > idx) - 4));
+    fichaEl.innerHTML = '<header><span class="cod">' + esc(it.codigo) + '</span><span class="dado">' + (idx + 1) + ' / ' + visiveis.length + '</span><button data-ficha-x aria-label="Fechar a ficha">✕</button></header><div class="fi-corpo">' +
+      '<button class="fi-img" data-amplia aria-label="Ampliar"><img src="' + it.g + '?v=' + it.v + '" alt="' + esc(it.codigo + ' · ' + it.titulo) + '"></button><h3>' + esc(it.titulo) + '</h3>' +
+      '<dl><dt>Key visual</dt><dd>' + KVN[it.kv] + '</dd><dt>Capítulo</dt><dd>' + CAPN[it.cap] + '</dd><dt>Tipo</dt><dd>' + TIPO[it.tipo] + '</dd><dt>Tamanho</dt><dd>' + it.w + ' × ' + it.h + ' px</dd>' + (it.credito ? '<dt>Foto</dt><dd>' + (it.link ? '<a href="' + esc(it.link) + '" target="_blank" rel="noopener">' + esc(it.credito) + '</a>' : esc(it.credito)) + '</dd>' : '') + '</dl>' +
+      '<div class="navega"><button data-passo="-1"' + (idx === 0 ? ' disabled' : '') + '>← Anterior</button><button class="amp" data-amplia>Ampliar</button><button data-passo="1"' + (idx === visiveis.length - 1 ? ' disabled' : '') + '>Próxima →</button></div>' +
+      (viz.length ? '<h4>No mesmo capítulo · ' + (viz.length + 1) + '</h4><div class="vizinhas">' + viz.slice(i0, i0 + 9).map(x => '<button data-id="' + x.id + '" title="' + esc(x.codigo + ' · ' + x.titulo) + '"><img src="' + x.t + '?v=' + x.v + '" alt="" loading="lazy"></button>').join('') + '</div>' : '') + '</div>';
+    for (const c of $$('.cartao.sel')) c.classList.remove('sel'); const c = $('#lista [data-id="' + it.id + '"].cartao'); if (c) c.classList.add('sel');
+  }
+  function ficha(id) { const i = visiveis.findIndex(x => x.id === id); if (i < 0) return; idx = i; desenhaFicha(); }
+  function fechaFicha() { fichaAberta = false; fichaEl.hidden = true; for (const c of $$('.cartao.sel')) c.classList.remove('sel'); }
+  fichaEl.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if ('fichaX' in b.dataset) fechaFicha(); else if ('amplia' in b.dataset) abre(visiveis[idx].id); else if (b.dataset.passo) passo(+b.dataset.passo); else if (b.dataset.id) ficha(b.dataset.id); });
+  function setVista(v2, alvo) {
+    vista = v2; document.body.classList.toggle('grade', v2 === 'grade'); for (const o of $('[data-filtro=vista]').children) { o.classList.toggle('on', o.dataset.v === v2); o.setAttribute('aria-pressed', o.dataset.v === v2); }
+    larg = 0; alt = 0; if (v2 === 'canvas') requestAnimationFrame(() => { tocou = false; ajusta(); if (alvo && pos[alvo]) enquadra(pos[alvo], 'largura', false); });
+  }
+  $('#lista').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.id) ficha(b.dataset.id); else if (b.dataset.canvas) setVista('canvas', b.dataset.canvas); else if ('limpa' in b.dataset) limpa(); });
+  function limpa() { filtro.kv = 'todos'; filtro.cap = 'todos'; filtro.pecas = false; filtro.q = ''; $('#busca').value = ''; for (const g of $$('.filtros .grupo')) { const f = g.dataset.filtro; if (f === 'vista') continue; for (const o of g.children) o.classList.toggle('on', f !== 'pecas' && o.dataset.v === 'todos'); } fechaFicha(); leiaute(); }
+  $('#busca').addEventListener('input', e => { filtro.q = norm(e.target.value.trim()); fechaFicha(); leiaute(); if (vista === 'canvas') inicio(); });
+
   // ── vista: arrastar, zoom, enquadrar ───────────────────────────────────────
-  const v = { x: 0, y: 0, k: 0.2 }; let anim = 0, lodT = 0;
+  const v = { x: 0, y: 0, k: 0.2 }; let anim = 0, lodT = 0, idx = 0, rt = 0, tocou = false, larg = 0, alt = 0;
   const lim = (n, a, b) => Math.min(b, Math.max(a, n));
   function aplica() {
     const pw = palco.clientWidth, ph = palco.clientHeight;
@@ -114,11 +158,11 @@
   const solta = e => { pts.delete(e.pointerId); ant = null; if (!pts.size) palco.classList.remove('arrasta'); };
   window.addEventListener('pointerup', solta); window.addEventListener('pointercancel', solta);
   palco.addEventListener('wheel', e => { e.preventDefault(); $('#dica').classList.add('some'); const p = rel(e), d = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY; zoomEm(p.x, p.y, Math.exp(-d * (e.ctrlKey ? 0.012 : 0.0016))); }, { passive: false });
-  palco.addEventListener('click', e => { const b = e.target.closest('.item'); if (b && !mexeu) abre(b.dataset.id); });
+  palco.addEventListener('click', e => { const b = e.target.closest('.item'); if (b && !mexeu) ficha(b.dataset.id); });
   palco.addEventListener('dragstart', e => e.preventDefault());
 
   $('.zoom').addEventListener('click', e => { const z = e.target.dataset.z; if (!z) return; const pw = palco.clientWidth / 2, ph = palco.clientHeight / 2; if (z === '+') zoomEm(pw, ph, 1.4); else if (z === '-') zoomEm(pw, ph, 1 / 1.4); else if (z === '1') zoomEm(pw, ph, 1 / v.k); else enquadra(tudo(), 'tudo'); });
-  const pula = k => { if (pos[k]) enquadra(pos[k], 'largura'); };
+  const pula = k => { if (vista !== 'canvas') return setVista('canvas', k); if (pos[k]) enquadra(pos[k], 'largura'); };
   $('.atalhos').addEventListener('click', e => { const b = e.target.closest('button'); if (b) pula(b.dataset.vai); });
   { const mini = $('#mini'), mm = $('#mini-mundo'); let pega = false; const leva = e => { const r = mm.getBoundingClientRect(), wx = lim((e.clientX - r.left) / r.width, 0, 1) * Wm, wy = lim((e.clientY - r.top) / r.height, 0, 1) * Hm; v.x = palco.clientWidth / 2 - wx * v.k; v.y = palco.clientHeight / 2 - wy * v.k; aplica(); };
     mini.addEventListener('pointerdown', e => { pega = true; mini.setPointerCapture(e.pointerId); cancelAnimationFrame(anim); leva(e); }); mini.addEventListener('pointermove', e => { if (pega) leva(e); }); mini.addEventListener('pointerup', () => { pega = false; }); mini.addEventListener('pointercancel', () => { pega = false; }); }
@@ -126,14 +170,15 @@
   // filtros
   $('.filtros').addEventListener('click', e => {
     const c = e.target.closest('.chip'); if (!c) return; const g = c.parentElement, f = g.dataset.filtro;
+    if (f === 'vista') { setVista(c.dataset.v); return; }
     if (f === 'pecas') { filtro.pecas = !filtro.pecas; c.classList.toggle('on', filtro.pecas); }
     else { filtro[f] = c.dataset.v; for (const o of g.children) o.classList.toggle('on', o === c); }
     for (const o of $$('.chip')) o.setAttribute('aria-pressed', o.classList.contains('on'));
-    leiaute(); inicio();
+    fechaFicha(); leiaute(); if (vista === 'canvas') inicio();
   });
 
   // ── tela cheia ─────────────────────────────────────────────────────────────
-  const cheia = $('#cheia'); let idx = 0;
+  const cheia = $('#cheia');
   function mostra() {
     const it = visiveis[idx]; if (!it) return;
     cheia.style.setProperty('--ac', it.kv === 'jc' ? '#FF4A1C' : '#0033A0'); cheia.style.setProperty('--acf', it.kv === 'jc' ? '#111111' : '#FFFFFF');
@@ -146,8 +191,8 @@
     history.replaceState(null, '', '#i=' + it.id);
   }
   function abre(id) { const i = visiveis.findIndex(x => x.id === id); if (i < 0) return; idx = i; cheia.hidden = false; mostra(); $('#ch-x').focus(); }
-  function fechaCheia() { cheia.hidden = true; history.replaceState(null, '', location.pathname + location.search); }
-  const passo = d => { const n = idx + d; if (n >= 0 && n < visiveis.length) { idx = n; mostra(); } };
+  function fechaCheia() { cheia.hidden = true; history.replaceState(null, '', location.pathname + location.search); if (fichaAberta) desenhaFicha(); }
+  function passo(d) { const n = idx + d; if (n >= 0 && n < visiveis.length) { idx = n; if (!cheia.hidden) mostra(); else if (fichaAberta) desenhaFicha(); } }
   $('#ch-x').addEventListener('click', fechaCheia); $('#ch-ant').addEventListener('click', () => passo(-1)); $('#ch-prox').addEventListener('click', () => passo(1));
   { let x0 = null; const a = $('#ch-img'); a.addEventListener('pointerdown', e => { x0 = e.clientX; }); a.addEventListener('pointerup', e => { if (x0 == null) return; const d = e.clientX - x0; x0 = null; if (d > 50) passo(-1); else if (d < -50) passo(1); }); a.addEventListener('pointercancel', () => { x0 = null; }); }
 
@@ -163,14 +208,17 @@
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (!cheia.hidden) { if (e.key === 'Escape') fechaCheia(); else if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); passo(1); } else if (e.key === 'ArrowLeft') passo(-1); return; }
     const aberta = $$('.folha').find(f => !f.hidden); if (aberta) { if (e.key === 'Escape') folha(null); return; }
-    if (/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    if (/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { if (e.key === 'Escape') document.activeElement.blur(); return; }
+    if (e.key === '/') { e.preventDefault(); $('#busca').focus(); return; }
+    if (fichaAberta) { if (e.key === 'Escape') return fechaFicha(); if (e.key === 'ArrowRight') return passo(1); if (e.key === 'ArrowLeft') return passo(-1); if (e.key === 'Enter') return abre(visiveis[idx].id); }
+    if (vista !== 'canvas') return;
     const pw = palco.clientWidth / 2, ph = palco.clientHeight / 2, d = 120;
     if (e.key === 'ArrowLeft') { v.x += d; aplica(); } else if (e.key === 'ArrowRight') { v.x -= d; aplica(); } else if (e.key === 'ArrowUp') { v.y += d; aplica(); } else if (e.key === 'ArrowDown') { v.y -= d; aplica(); }
     else if (e.key === '+' || e.key === '=') zoomEm(pw, ph, 1.4); else if (e.key === '-') zoomEm(pw, ph, 1 / 1.4); else if (e.key === '0') enquadra(tudo(), 'tudo'); else if (e.key === '1') pula('jc'); else if (e.key === '2') pula('comum'); else if (e.key === '3') pula('aa');
   });
-  let rt = 0, tocou = false, larg = palco.clientWidth;
+  larg = palco.clientWidth;
   palco.addEventListener('pointerdown', () => { tocou = true; }); palco.addEventListener('wheel', () => { tocou = true; }, { passive: true });
-  let alt = palco.clientHeight;
+  alt = palco.clientHeight;
   const ajusta = () => { const w = palco.clientWidth, h = palco.clientHeight; if (!w || !h || (w === larg && h === alt)) return; const era = larg; larg = w; alt = h; leiaute(); if (!era || !tocou) inicio(false); };
   new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(ajusta, 60); }).observe(palco);
   window.addEventListener('resize', ajusta); document.addEventListener('visibilitychange', ajusta); window.addEventListener('pageshow', ajusta);
@@ -181,7 +229,7 @@
   setTimeout(() => $('#dica').classList.add('some'), 7000);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { leiaute(); if (!tocou) inicio(false); });
   Placa.iniciar(M);
-  const rota = () => { const h = location.hash.slice(1); if (h === 'placa' || h === 'creditos') folha(h); else if (h.startsWith('i=')) abre(decodeURIComponent(h.slice(2))); };
+  const rota = () => { const h = location.hash.slice(1); if (h === 'placa' || h === 'creditos') folha(h); else if (h === 'canvas') setVista('canvas'); else if (h.startsWith('i=')) { const id = decodeURIComponent(h.slice(2)); ficha(id); abre(id); } };
   rota(); window.addEventListener('hashchange', rota);
   window.DA = { M, v, filtro, leiaute, visiveis: () => visiveis, pos };
 })();

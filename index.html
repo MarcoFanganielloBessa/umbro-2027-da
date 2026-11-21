@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Roboto+Condensed:wght@900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
-<body>
+<body class="grade">
 
 <header class="barra">
   <div class="marca"><b>Umbro 2027</b><span> · Direção de Arte + Key Visual</span></div>
@@ -22,6 +22,10 @@
 </header>
 
 <div class="filtros" role="toolbar" aria-label="Filtros">
+  <div class="grupo" data-filtro="vista">
+    <button class="chip on" data-v="grade" aria-pressed="true">Grade</button>
+    <button class="chip" data-v="canvas" aria-pressed="false">Canvas</button>
+  </div>
   <div class="grupo" data-filtro="kv">
     <button class="chip on" data-v="todos">Os dois KVs</button>
     <button class="chip" data-v="jc"><i class="pt jc"></i>O Jogo Continua</button>
@@ -38,6 +42,7 @@
   <div class="grupo" data-filtro="pecas">
     <button class="chip" data-v="sim">Peças em tamanho real</button>
   </div>
+  <label class="busca"><span class="sr">Buscar</span><input id="busca" type="search" placeholder="Buscar  /" autocomplete="off" spellcheck="false"></label>
   <span class="conta" id="conta"></span>
 </div>
 
@@ -120,6 +125,9 @@
   </div>
 </main>
 
+<div class="lista" id="lista" aria-label="Peças por key visual e capítulo"></div>
+<aside class="ficha" id="ficha" aria-label="Ficha da peça" hidden></aside>
+
 <div class="controles">
   <div class="zoom">
     <button data-z="-" aria-label="Afastar">−</button>
@@ -187,7 +195,7 @@
   </div>
 </div>
 
-<script src="placa.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="placa.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

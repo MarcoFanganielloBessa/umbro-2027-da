@@ -1,5 +1,5 @@
 {
- "gerado": "20/11/2026 23:20",
+ "gerado": "20/11/2026 23:23",
  "caps": [
   "abertura",
   "repertorio",
@@ -112,6 +112,19 @@
    "t": "img/t/jc-tela-07d.webp",
    "g": "img/g/jc-tela-07d.webp",
    "v": 1795213691
+  },
+  {
+   "id": "jc-tela-07e",
+   "kv": "jc",
+   "cap": "exploracao",
+   "tipo": "tela",
+   "codigo": "JC 07e",
+   "titulo": "Exploração",
+   "w": 2000,
+   "h": 1250,
+   "t": "img/t/jc-tela-07e.webp",
+   "g": "img/g/jc-tela-07e.webp",
+   "v": 1795227698
   },
   {
    "id": "jc-tela-08",
