@@ -159,7 +159,7 @@
     vista = v2; document.body.classList.toggle('grade', v2 === 'grade'); document.body.classList.toggle('refs', v2 === 'refs'); fechaFicha(); for (const o of $('[data-filtro=vista]').children) { o.classList.toggle('on', o.dataset.v === v2); o.setAttribute('aria-pressed', o.dataset.v === v2); }
     larg = 0; alt = 0; if (v2 !== 'grade') requestAnimationFrame(() => { tocou = false; ajusta(); if (alvo && pos[alvo]) enquadra(pos[alvo], 'largura', false); });
   }
-  $('#lista').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.id) ficha(b.dataset.id); else if (b.dataset.canvas) setVista('canvas', b.dataset.canvas); else if ('limpa' in b.dataset) limpa(); });
+  $('#lista').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return fechaFicha(); if (b.dataset.id) ficha(b.dataset.id); else if (b.dataset.canvas) setVista('canvas', b.dataset.canvas); else if ('limpa' in b.dataset) limpa(); });
   function limpa() { filtro.kv = 'todos'; filtro.cap = 'todos'; filtro.pecas = false; filtro.q = ''; $('#busca').value = ''; for (const g of $$('.filtros .grupo')) { const f = g.dataset.filtro; if (f === 'vista') continue; for (const o of g.children) o.classList.toggle('on', f !== 'pecas' && o.dataset.v === 'todos'); } fechaFicha(); leiaute(); }
   $('#busca').addEventListener('input', e => { filtro.q = norm(e.target.value.trim()); fechaFicha(); leiaute(); if (vista === 'canvas') inicio(); });
 
@@ -192,7 +192,7 @@
     vai({ k, x: (pw - r.w * k) / 2 - r.x * k, y: modo === 'tudo' ? (ph - r.h * k) / 2 - (r.y || 0) * k : mg - (r.y || 0) * k }, suave);
   }
   const tudo = () => ({ x: 0, y: 0, w: Wm, h: Hm });
-  function inicio(suave) { const estreito = palco.clientWidth < 760; if (vista === 'refs') { const a2 = R.kvs && R.kvs.jc, b2 = R.kvs && R.kvs.aa; if (!a2) return enquadra(tudo(), 'tudo', suave); const pw = palco.clientWidth, ph = palco.clientHeight; if (estreito) return enquadra({ x: a2.x - 40, y: a2.y - 60, w: b2.x + b2.w - a2.x + 80, h: a2.h + 240 }, 'tudo', suave); if (pw / ph < 1.25) return enquadra({ x: 1000, y: a2.y - 260, w: R.W - 2000, h: a2.h + 560 }, 'tudo', suave); return enquadra(tudo(), 'tudo', suave); } if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (pos.jc && filtro.cap === 'todos' && !filtro.pecas) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), estreito ? 'largura' : 'tudo', suave); }
+  function inicio(suave) { const estreito = palco.clientWidth < 760; if (vista === 'refs') { const a2 = R.kvs && R.kvs.jc, b2 = R.kvs && R.kvs.aa; if (!a2) return enquadra(tudo(), 'tudo', suave); const pw = palco.clientWidth, ph = palco.clientHeight; if (estreito) return enquadra({ x: 1000, y: a2.y - 200, w: R.W - 2000, h: a2.h + 440 }, 'tudo', suave); return enquadra(tudo(), 'tudo', suave); } if (filtro.kv !== 'todos' && pos[filtro.kv]) enquadra(pos[filtro.kv], 'largura', suave); else if (pos.jc && filtro.cap === 'todos' && !filtro.pecas) enquadra(pos.jc, 'largura', suave); else enquadra(tudo(), estreito ? 'largura' : 'tudo', suave); }
 
   const pts = new Map(); let mexeu = false, soma = 0, ant = null;
   const rel = e => { const r = palco.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
@@ -258,7 +258,8 @@
     const aberta = $$('.folha').find(f => !f.hidden); if (aberta) { if (e.key === 'Escape') folha(null); return; }
     if (/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { if (e.key === 'Escape') document.activeElement.blur(); return; }
     if (e.key === '/') { e.preventDefault(); $('#busca').focus(); return; }
-    if (fichaAberta) { if (e.key === 'Escape') return fechaFicha(); if (e.key === 'ArrowRight') return passo(1); if (e.key === 'ArrowLeft') return passo(-1); if (e.key === 'Enter') return abre(visiveis[idx].id); }
+    if (!fichaEl.hidden && e.key === 'Escape') return fechaFicha();
+    if (fichaAberta) { if (e.key === 'ArrowRight') return passo(1); if (e.key === 'ArrowLeft') return passo(-1); if (e.key === 'Enter') return abre(visiveis[idx].id); }
     if (vista !== 'canvas') return;
     const pw = palco.clientWidth / 2, ph = palco.clientHeight / 2, d = 120;
     if (e.key === 'ArrowLeft') { v.x += d; aplica(); } else if (e.key === 'ArrowRight') { v.x -= d; aplica(); } else if (e.key === 'ArrowUp') { v.y += d; aplica(); } else if (e.key === 'ArrowDown') { v.y -= d; aplica(); }
@@ -274,7 +275,8 @@
 
   // partida
   montaRede(); larg = 0; alt = 0; leiaute(); inicio(false); ajusta(); setTimeout(() => mundo.classList.add('vivo'), 900);
-  setTimeout(() => $('#dica').classList.add('some'), 7000);
+  if (palco.clientWidth < 760) $('#dica').textContent = 'Há referências em volta dos dois KVs · arraste, ou toque em Ver tudo';
+  setTimeout(() => $('#dica').classList.add('some'), 9000);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { leiaute(); if (!tocou) inicio(false); });
   Placa.iniciar(M);
   const rota = () => { const h = location.hash.slice(1); if (h === 'placa' || h === 'creditos') folha(h); else if (h === 'canvas' || h === 'grade' || h === 'refs') setVista(h); else if (h.startsWith('i=')) { const id = decodeURIComponent(h.slice(2)); ficha(id); abre(id); } };
